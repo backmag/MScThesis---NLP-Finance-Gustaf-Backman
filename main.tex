@@ -1,0 +1,98 @@
+\documentclass[nofilelist]{cslthse-msc}
+% to show a list of used packages at the end of the document, delete the nofilelist option
+%\documentclass{cslthse-msc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{amsfonts}
+\usepackage{amsthm}
+%\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[titletoc, header, page]{appendix}
+\usepackage{transparent}
+\usepackage{natbib}
+
+% Added by me
+\usepackage{enumerate}
+
+
+
+% used to display the used files at the end. Select nofilelist as a package option to disable this
+\listfiles % initialize
+
+%\geometry{showframe}
+%better like this?
+\student{Gustaf Backman}{ine14gba@student.lu.se}
+
+\thesisnumber{LU-CS-EX: 2020-XX} % Birger Swahn will provide this number to you, once the thesis is ready for publication
+
+\title{Forecasting US Financial Data using Natural Language Processing of Financial News}
+
+\threelinestitle
+
+
+\subtitle{SUBTITLE}
+\company{Kidbrooke Advisory AB}
+\supervisors{Pierre Nugues, \href{mailto:pierre.nugues@cs.lth.se}{\texttt{pierre.nugues@cs.lth.se}}}{Edvard Sjögren, \href{mailto:edvard.sjogren@kidbrooke.com}{\texttt{edvard.sjogren@kidbrooke.com}}}
+\examiner{Marcus Klang, \href{mailto:marcus.klang@cs.lth.se}{\texttt{marcus.klang@cs.lth.se}}}
+
+\date{\today}
+
+\acknowledgements{TACK
+}
+
+\theabstract{
+This document describes the Master's Thesis format for the theses carried out at 
+the Department of Computer Science, Lund University. 
+
+Your abstract should capture, in English, the whole thesis with focus on the problem and solution in 150 words. It should be placed on a separate right-hand page, with an additional \textit{1cm} margin on both left and right. Avoid acronyms, footnotes, and references in the abstract if possible.
+
+Leave a \textit{2cm} vertical space after the abstract and provide a few keywords relevant for your report. Use five to six words, of which at most two should be from the title.
+}
+
+\keywords{MSc, BSc, template, report, style, structure}
+
+%% Only used to display font sizes
+\makeatletter
+\newcommand\thefontsize[1]{{#1 \f@size pt\par}}
+\makeatother
+%%%%%%%%%%
+
+\begin{document}
+\renewcommand{\bibname}{References}
+
+\makefrontmatter
+\include{Chapters/Problem_Description}
+\include{Chapters/Theoretical_Background}
+\include{Chapters/Method}
+\include{Chapters/Results}
+\include{Chapters/Discussion}
+
+% Should use consistent formatting when it comes to Names ("FirstName LastName", or "F. LastName")
+%\printbibliography
+\makebibliography{MyMSc} % See file MyMSc
+
+\begin{appendices}
+
+\include{Chapters/AppendixA}
+\include{Chapters/AppendixB}
+
+% display used packages information unless noflielist is used in the cslthse-msc package option
+\printfilelist
+
+%make sure we're on even page with the pop-sci
+\checkoddpage
+\ifoddpage
+\else
+   \newpage
+   \thispagestyle{empty}
+   \mbox{ }
+\fi
+\includepdf[pages={1}]{popsci/popsci.pdf}
+\end{appendices}
+
+\end{document}

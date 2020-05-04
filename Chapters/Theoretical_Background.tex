@@ -1,0 +1,282 @@
+\chapter{Theoretical Background}
+\section{Machine Learning / Neural Networks?}
+
+\section{Time Series Analysis}
+
+Traditional time series analysis is concerned with finding statistical information of observations distributed in time. The purpose can be to get a better understanding of the underlying process, or to make predictions on future realisations of the process. Such processes are typically present in the fields of finance, signal processing, weather forecasting, control engineering etc. Several methods for modelling processes have been developed, where some of the oldest and most useful methods are the \textit{autoregressive} model (AR) and the \textit{moving average} model (MA). These two concepts can be combined to benefit from both models into an ARMA-model.
+
+\subsection{Autoregressive (AR) Model}
+An auto-regressive model of order $p$ is simply a linear combination of the $p$ previous terms plus some noise. An AR(p)-process is commonly characterized by its generating polynomial $A(z) = a_0 + a_1z + \cdots + a_pz^p$, where $a_i \in \mathbb{R} \ \forall \ i$ and $a_0=1$. Furthermore, let $e_t$ be uncorrelated white noise with variance $\sigma^2$ in discrete time defined as, 
+\begin{align}
+    \text{E}[e_t] &= 0 \\
+    C[e_s, e_t] &= \begin{cases}
+    \sigma^2 \ \text{if} \ s=t \\
+    0 \ \text{else}
+    \end{cases}
+\end{align}
+
+Supposing $A(z)$ is a stable polynomial of degree $p$ and $e_t$ is as defined above, the stationary sequence $X_t$ is called an AR(p)-process with generating polynomial $A(z)$. 
+\begin{align}
+    X_t + a_1 X_{t-1} + \cdots + a_p X_{t-p} = e_t
+\end{align}
+
+The process is stable if the roots of the characteristic equation $z^p A(z^{-1}) = 0$ are all inside the unit circle. 
+
+The values $e_t$ are the called the innovations to the process and the coefficients of the $A(z)$-polynomial are tuneable parameters. 
+
+There are several techniques for estimating the coefficients of the $A(z)$-polynomial. One technique is to transform the problem onto regression form and view the $A(z)$-coefficients as regression coefficients. The most recent value $X_t$ is set as the response variable $y_t$ and the previous samples $(-X_{t-1},\dots,-X_{t-p})$ are the explanatory variables $\mathbf{x_t}$. Letting the coefficients $(a_0, a_1,...,a_p)^T = \mathbf{A} $, the expression (2.3) can be rewritten on a vector form, recognized from regression. 
+
+\begin{align}
+    y_t = \mathbf{x_t} \mathbf{A} + e_t
+\end{align}
+
+The elements of $\mathbf{A}$ can then be estimated as the least squares estimate over $n$ samples, i.e. the values of $\mathbf{A}$ that minimize (2.5). 
+
+\begin{align}
+    L(\mathbf{A}) = \sum_{t=p+1}^n (y_t - \mathbf{x_t} \mathbf{A})^2
+\end{align}
+
+Or more conveniently, in matrix format. 
+
+\begin{align}
+    \mathbf{Y} = \begin{pmatrix}
+    y_{p+1} \\
+    y_{p+2} \\
+    \vdots \\
+    y_n
+    \end{pmatrix} , \hspace{1em} \mathbf{E} = \begin{pmatrix}
+    e_{p+1} \\
+    e_{p+2} \\
+    \vdots \\
+    e_t
+    \end{pmatrix} , \hspace{1em} \mathbf{X} = \begin{pmatrix}
+    \mathbf{x}_{p+1} \\
+    \mathbf{x}_{p+2} \\
+    \vdots \\
+    \mathbf{x}_{t}
+    \end{pmatrix} \\[10pt] 
+    L(\mathbf{A}) = (\mathbf{Y} - \mathbf{X}\mathbf{A})^T(\mathbf{Y} - \mathbf{X}\mathbf{A})
+\end{align}
+
+Differentiating (2.7) with respect to $\mathbf{A}$ and setting equal to zero yields the least squares estimate. 
+
+\begin{align}
+    \frac{\partial L}{\partial \mathbf{A}} &= -2 \mathbf{X}^T \mathbf{Y} + 2\mathbf{X}^T \mathbf{X} \mathbf{A} \\
+    \frac{\partial L}{\partial \mathbf{A}} &= 0 \implies \hat{\mathbf{A}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y}
+ \end{align}
+
+The estimated innovation variance $\hat{\sigma^2}$ is simply the sample variance of the innovations.
+
+\begin{align}
+    \hat{\sigma^2} =\frac{1}{n-p} \sum_{t=p+1}^n e_t^2 = \frac{L(\hat{\mathbf{A}})}{n-p}
+\end{align}
+
+The method above yields an estimate for an AR(p)-process. The order p of the process still has to be determined using various goodness-of-fit criteria such as Akaike Information Criterion. 
+
+
+\textcolor{red}{Borde jag ha med Yule-Walker ekvationer här kanske? }
+
+\subsection{Moving Average (MA) Model}
+
+Another popular time series model is the moving average (MA) model. This model is similarly to the AR-model defined by its generating polynomial, here called $C(z)$. 
+
+\begin{align}
+    C(z) = c_0 + c_1 z + \cdots + c_q z^q 
+\end{align}
+
+A MA(q)-process is a linear combination of the q previous white noise terms as defined in (2.1, 2.2), plus one new innovation term. 
+
+\begin{align}
+    X_t = e_t + c_1 e_{t-1} + \cdots + c_q e_{t-q}
+\end{align}
+
+A common adjustment to the model is to set $c_0 = 1$ and adjust the other coefficients and the innovation variance accordingly. 
+
+An important distinction between the AR(p)-process and the MA(q)-process that the covariance function for the MA(q)-process is zero for time lags $\tau$ larger than the order q of the process. In other words, the value $X_{t+q + 1}$ is independent of the value $X_t$ in a MA(q)-process. 
+
+\subsection{Autoregressive Moving Average (ARMA) Model}
+
+The AR-process and MA-process are commonly combined into an ARMA-process. 
+
+\section{Representation of Language}
+
+Language has enabled people to exchange information in an efficient manner for thousands of years, both through speech and text. The complexity and nuances that makes a language so fitting for transferring information between humans is also what makes it so difficult to represent in numbers. A few of the difficulties when interpreting text language are listed below. 
+\begin{enumerate}[i)]
+    \item \textit{Homonyms}, words that have the same spelling but different meaning. Consider for instance the word \textit{"bull"}, which might refer to the animal or an investor who believes in a rising market. The same letters, but with vastly different interpretations depending on the context. 
+    \item \textit{Negations}. The sentences \textit{"God will help you"} and \textit{"No God will help you"} contain almost the same words, but have completely opposite meanings. 
+    \item \textit{Sarcasm}. This can be hard enough to detect for humans. The phrase "That's just what I needed today!" might actually mean what it literally says, or just the opposite.
+\end{enumerate}
+
+Methods used for representing words deal with these difficulties in different ways or not at all. For some shallow, more simple NLP-tasks, a model might be perform well without understanding homonyms or that two words are closely related. For more complex tasks such as sequence-to-sequence translation of language, a deeper understanding is naturally needed. 
+
+\subsection{One-hot Encoding}
+
+If a group of students were asked to construct a way of turning  sequences of words into numerical data, one could imagine that one-hot encoding would be what they would come up with. One-hot encoding is simply done by giving all unique words in a text an index and then letting the index represent the word. Consider a training example $x_i$ as the sentence below. 
+
+\begin{center}
+    \textit{A gorilla visited Manilla.}    
+\end{center}
+
+The first processing needed is to divide the sentence into smaller units - \textit{tokens}. A tokenized version of the sentence above would be,
+
+\begin{center}
+    \textit{"A", "gorilla", "visited", "Manilla", "."}    
+\end{center}
+
+Some of these tokens carries information about the beginning or end of the sentence, which is obviously important. However, not all capital letters imply the start of a sequence and not all punctuation indicates the end of a sequence, e.g. \textit{"Hello Mr. Gorilla!"}. There are quite a few special cases of this sort, and there are convenient functions in python that deal with the problems of tokenization, such as \textit{Tokenizer} from Keras \citep{chollet2020keras}. The tokenizer from Keras splits the text into sequences, removes the punctuation and transforms all characters to lower case by default. 
+
+When the sentence is tokenized, it is also common to remove the most frequent words, since these probably doesn't give a lot of information about the difference between sentences. These are called \textit{stop words} and typically include common words such as \textit{a, the, but} etc.
+
+When the sentence has been tokenized, each unique word is given an index. 
+
+\begin{center}
+    \begin{tabular}{rc}
+        \textit{gorilla} $:$ & 1 \\
+        \textit{visited} $:$ & 2 \\
+        \textit{manilla} $:$ & 3 \\
+    \end{tabular}
+\end{center}
+
+Each word of the sentence is then transformed to a one-hot vector where all elements are zero except for element $i$. A sequence of words can then be represented as a sequence of vectors. 
+
+\begin{align*}
+    \textit{gorilla} : \begin{bmatrix}
+    1 & 0 & 0 
+    \end{bmatrix} \\
+    \textit{visited} : \begin{bmatrix}
+    0 & 1 & 0 
+    \end{bmatrix} \\
+    \textit{manilla} : \begin{bmatrix}
+    0 & 0 & 1 
+    \end{bmatrix} \\
+\end{align*}
+
+
+\subsection{Bag-of-words \& TF-IDF}
+
+An initial bag-of-words (BOW) approach to represent a sentence as a vector is to simply keep track of whether a word is included in the sentence or not. If the word is included, the element on the corresponding index has value 1, otherwise 0. The previously used example would then be represented by $x_i$ as, 
+
+
+\begin{align*}
+    x_i = \begin{bmatrix}
+    1 & 1 & 1 & 1
+    \end{bmatrix}
+\end{align*}
+
+Note that even though the order of words is the same in the vector as in the original sentence, this is not necessarily the case. The less interpretable sentence \textit{Manilla visited a gorilla} would have the same vector representation as $x_i$. Hence, BOW does not take order of words in a sentence into account. 
+
+There are variations of BOW that have larger representing power, such as including the count of words in the sentence rather than if it exists or not. A problem with this approach is that words that are more frequent in sentences gets a higher value than words that are not as frequent, even if less frequent words might be more interesting for the context. A variation that deals with this limitation is the TF-IDF representation. 
+
+Term Frequency-Inverse Document Frequency (TF-IDF) is a widely used technique for normalizing text data. It uses the same underlying principles as BOW but with a weight normalization. As the name suggests, the value for a certain word is increased for its frequency in a document but decreased for the frequency in the whole document which is considered. So, a word which has a low frequency in a full corpus is considered more important than a word with low frequency. The entry $j$ in a vector $x_i$ is then calculated as the product of the term frequency weight and the inverse document frequency weight. 
+
+\begin{align*}
+    x_{ij} = f_s(t,f) \cdot f_d(t,F)
+\end{align*}
+
+For a term $t$ with frequency $f$ in sequence $i$ and frequency $F$ in the whole document. The function $f_s$ is some function increasing with the number of words $j$ in the sentence and $f_d$ is decreasing with the number of words in the full document. Examples of these function can be as below. 
+
+\begin{align*}
+    f_s &= \frac{\mid \{ j \in (1, \hdots , L_i) : s_{ij} = t  \} \mid}{L_i} \\
+    f_d &= \log{\frac{N}{n_t}}
+\end{align*}
+
+Where $L_i$ is the length of the sentence $i$, $N$ is the number of sequences in the document and $n_t$ is the number of documents in which the term $t$ occurs at least once \citep{manning2008introduction}. 
+
+While this remedies some of the shortcomings of BOW, there are still some aspects where it falls short. 
+
+Firstly, the size of the vectors grow with the number of unique words in the corpus, which an become computationally infeasible for larger texts. 
+
+Secondly, the order of the words is not accounted for in BOW. When used in an application for interpreting financial news, the representation must be able to distinguish between \textit{"Google place a bid on Amazon"} and \textit{"Amazon place a bid on Google"}. BOW however simply registers the occurrence of words. 
+
+Finally, BOW does not really capture any essence of the language. There is no way for the mode to capture the similarity between words such as \textit{awesome} and \textit{amazing}. This is related to the large dimensionality of the vectors representing the words, since each word has a unique dimension in the vector. This implies all dimensions are orthogonal, therefore there is no usable algebraic measure of similarity. 
+
+
+All of the problems above are addressed by the concept of word embeddings in the next section. 
+
+
+
+
+\subsection{Word Embeddings}
+
+As opposed to the sparse representation of one-hot encoding, \textit{word embeddings} are dense, continuous vector representations of words. The dimension of a one-hot encoded vector is proportional to the size of the vocabulary (generally 20,000 or greater), whereas word embedding vectors typically have 100 to 1000 dimensions \citet{chollet2017deep}.
+
+A major break through on the topic of word embeddings was made by \citep{mikolov2013efficient} where efficient methods of training a model were introduced, popularised as the \textit{word2vec}-model. Two model architectures for training the $d$-dimensional vector representations of words are described, \textit{continuous bag-of-words} and \textit{continuous skip-gram}. Both of the methods share the  notion that the meaning of a word is determined by which words it is commonly used together with. The representations are learned by constructing fake tasks which are then solved by a neural network. This task is generally to predict neighboring words of a given word. The weights in the trained neural network is the interesting component.
+
+\textit{Continuous bag-of-words} is trained by predicting the missing word in a sequence of words with a given window size. The order of the words are not taken into consideration other than for deciding which words to include in one sequence. For instance, the phrase \textit{"A gorilla visited Manilla."} with window size one gives the following training samples.
+\begin{center}
+\textit{"A gorilla visited"} $\implies x = $ \textit{("a", "visited")} $,y = $ \textit{"gorilla"} \\ \vspace{1em}
+\textit{"gorilla visited Manilla"} $\implies x = $ \textit{("gorilla", "Manilla")} $,y = $ \textit{"visited"} \\
+\end{center}
+
+Again, note that the order of the words above are not taken into account. 
+
+
+\textit{Continuous skip-grams} also use the fact that words that often occur together have some sense of similarity, but is in a way the inverse of continuous bag-of-words. Rather than predicting the missing word, the objective of the model is to predict the surrounding words. To construct training examples from the same phrase as above with a 1-skip-gram, the following samples are generated. 
+
+\begin{center}
+\textit{"A gorilla visited"} $\implies (x,y) = $ \textit{("gorilla", "a"), ("gorilla", "visited")} \\ \vspace{1em}
+\textit{"gorilla visited Manilla"} $\implies (x,y) = $ \textit{("visited", "gorilla"), ("visited", "Manilla")}
+\end{center}
+
+The known words above are \textit{"gorilla"} and \textit{"visited"} respectively. 
+
+According to the authors, the continuous bag-of-words model is faster for training but the continuous skip-gram model is better for infrequent words \textcolor{red}{Från  https://code.google.com/archive/p/word2vec/, hur referera? }. 
+
+
+The word embeddings generated by these methods does carry some information about the semantic relationship of words. As mentioned in the previous section, a desirable function of word representation is to determine whether a word is close to another word in a semantic meaning. This is elegantly represented in word embeddings as the cosine similarity between word vectors. Consider for instance the word \textit{Sweden}. The closest word vectors in the word2vec-vocabulary with respect to cosine similarity are displayed in table 2.1. 
+
+\begin{figure}[h!]
+    \centering
+    \begin{tabular}{l|c|}
+        Word & Cosine Similarity  \\
+        \hline \hline 
+        Finland & 0.8085 \\
+        Norway  & 0.7706 \\
+        Denmark & 0.7674 \\
+        Swedish & 0.7404 \\
+        Swedes  & 0.7133 \\
+        \hline 
+    \end{tabular}
+    \caption{Word vectors with the highest cosine similarity to 'Sweden'. Pre-trained embeddings from the word2vec module of the python gensim library were used. }
+\end{figure}
+
+There is also a straight forward interpretation of elementwise addition and subtraction of these word embeddings. In some sense, the $d$-dimensions of the embeddings can be interpreted to be metrics of different properties. For instance, the sum of the embeddings for the words "doctor" and "animal" is most similar to the embedding for the word "veterinarian". There is also reasonable syntactic results when performing simple mathematical operations. It would for instance be expected that the difference between \textit{running} and \textit{run} is similar to the difference between \textit{swimming} and \textit{swim}. This can roughly be expressed as below. 
+\begin{align}
+    \textit{running - run} \approx  \textit{swimming - swim}
+\end{align}
+
+Indeed, taking the embeddings for the words and calculating \textit{running - run + swim} results in a vector which is most similar to the embedding for the word \textit{"swimming"} using the 44,000 most common words in the python gensim implementation of word2vec.
+
+
+\subsection{Transformers}
+
+
+\section{Combining Model Features}
+\textcolor{red}{Combining NLP and ARIMA? I guess this is not needed anymore, since ARIMA is more of a pre-processing step to the NLP-part? }
+
+
+\section{Performance Metrics}
+The metrics used to evaluate the models are accuracy, recall, precision and F1-score. While these metrics are all somewhat related, they give different insights of performance. For convenience a binary confusion matrix is displayed below. 
+
+\begin{figure}
+\centering
+\begin{tabular}{cccccc}
+     \multirow{2}{*}{Actual values} & 0 & \multicolumn{1}{|c|}{True Negatives (TN)} &  \multicolumn{1}{c|}{False Negatives (FN)} \\\cline{2-4}
+      & 1 & \multicolumn{1}{|c|}{False Positives (FP)} & \multicolumn{1}{c|}{True Positives (TP)} \\\cline{2-4}
+     & & \multicolumn{1}{|c|}{0} & \multicolumn{1}{c|}{1} & \\
+      & & \multicolumn{2}{c}{Predictions} & \\
+\end{tabular}
+\caption{Confusion matrix for binary classification.}
+\label{fig:cm}
+\end{figure}
+
+
+\begin{description}
+    \item[Accuracy:] The most intuitive measure of performance, simply the ratio of correct classifications to the total number of classifications. If the labels of a data set are symmetric, this is a good measure of performance. However, if 90 \%  of the samples are of label $a$ and 10\% of label $b$, a model which constantly predicts label $a$ gets an accuracy of 90\%. It doesn't reveal any information about which data is classified incorrectly. 
+    \item[Precision:] The number of correctly classified samples in one class divided by the total number of predictions of that class. The precision $\P$ for class 0 in Figure~\ref{fig:cm} is calculated as $\displaystyle{P = \frac{TN}{TN + FP}}$. 
+    \item[Recall:] The number of correctly classified samples in one class divided by the total number of samples in that class. In other words, a measure of how many percent of a class that was found. In relation to figure 2.2 it is calculated as $\textit{R} = \textit{TN}/(\textit{TN} + \textit{FN})$. Recall is also referred to as \textit{sensitivity} in statistical literature. 
+    \item[F1-score:] A measure which combines precision and recall as the harmonic mean of the two. Calculated as $\textit{F1} = 2 (\textit{R} \cdot \textit{P}) / (\textit{R} + \textit{P})$. An F1-score of 1 implies perfect recall and precision.
+\end{description}
+
+The precision, recall and F1-score are metrics which are calculated for every class in a classification problem. In order to get a single metric for a set of samples, these can be weighted by the number of true labels of each class. Hence for a binary classification problem, $\textit{F1}_w = \textit{F1}_0 \cdot w_0 + \textit{F1}_1 \cdot w_1$, where $w_i$ is the ratio of labels in class $i$ in the training set \citep{Ting2017}. 
+
