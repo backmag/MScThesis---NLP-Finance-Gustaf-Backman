@@ -5,35 +5,34 @@
 
 Traditional time series analysis is concerned with finding statistical information of observations distributed in time. The purpose can be to get a better understanding of the underlying process, or to make predictions on future realisations of the process. Such processes are typically present in the fields of finance, signal processing, weather forecasting, control engineering etc. Several methods for modelling processes have been developed, where some of the oldest and most useful methods are the \textit{autoregressive} model (AR) and the \textit{moving average} model (MA). These two concepts can be combined to benefit from both models into an ARMA-model.
 
-\subsection{Autoregressive (AR) Model}
+\subsection{Autoregressive (AR) Model} \label{sub:ar}
 An auto-regressive model of order $p$ is simply a linear combination of the $p$ previous terms plus some noise. An AR(p)-process is commonly characterized by its generating polynomial $A(z) = a_0 + a_1z + \cdots + a_pz^p$, where $a_i \in \mathbb{R} \ \forall \ i$ and $a_0=1$. Furthermore, let $e_t$ be uncorrelated white noise with variance $\sigma^2$ in discrete time defined as, 
 \begin{align}
-    \text{E}[e_t] &= 0 \\
+    \text{E}[e_t] &= 0 \label{eq:wne}\\
     C[e_s, e_t] &= \begin{cases}
     \sigma^2 \ \text{if} \ s=t \\
     0 \ \text{else}
-    \end{cases}
+    \end{cases} \label{eq:wnc}
 \end{align}
 
 Supposing $A(z)$ is a stable polynomial of degree $p$ and $e_t$ is as defined above, the stationary sequence $X_t$ is called an AR(p)-process with generating polynomial $A(z)$. 
 \begin{align}
     X_t + a_1 X_{t-1} + \cdots + a_p X_{t-p} = e_t
+    \label{eq:ar}
 \end{align}
 
-The process is stable if the roots of the characteristic equation $z^p A(z^{-1}) = 0$ are all inside the unit circle. 
+The process is stable if the roots of the characteristic equation $z^p A(z^{-1}) = 0$ are all inside the unit circle. The values $e_t$ are the called the innovations to the process and the coefficients of the $A(z)$-polynomial are tuneable parameters \citep{lindgren2014stationary}. 
 
-The values $e_t$ are the called the innovations to the process and the coefficients of the $A(z)$-polynomial are tuneable parameters. 
-
-There are several techniques for estimating the coefficients of the $A(z)$-polynomial. One technique is to transform the problem onto regression form and view the $A(z)$-coefficients as regression coefficients. The most recent value $X_t$ is set as the response variable $y_t$ and the previous samples $(-X_{t-1},\dots,-X_{t-p})$ are the explanatory variables $\mathbf{x_t}$. Letting the coefficients $(a_0, a_1,...,a_p)^T = \mathbf{A} $, the expression (2.3) can be rewritten on a vector form, recognized from regression. 
+There are several techniques for estimating the coefficients of the $A(z)$-polynomial. One technique is to transform the problem onto regression form and view the $A(z)$-coefficients as regression coefficients. The most recent value $X_t$ is set as the response variable $y_t$ and the previous samples $(-X_{t-1},\dots,-X_{t-p})$ are the explanatory variables $\mathbf{x_t}$. Letting the coefficients $(a_0, a_1,...,a_p)^T = \mathbf{A} $, the expression \ref{eq:ar} can be rewritten on a vector form, recognized from regression. 
 
 \begin{align}
     y_t = \mathbf{x_t} \mathbf{A} + e_t
 \end{align}
 
-The elements of $\mathbf{A}$ can then be estimated as the least squares estimate over $n$ samples, i.e. the values of $\mathbf{A}$ that minimize (2.5). 
+The elements of $\mathbf{A}$ can then be estimated as the least squares estimate over $n$ samples, i.e. the values of $\mathbf{A}$ that minimize \ref{eq:leastsq}. 
 
 \begin{align}
-    L(\mathbf{A}) = \sum_{t=p+1}^n (y_t - \mathbf{x_t} \mathbf{A})^2
+    L(\mathbf{A}) = \sum_{t=p+1}^n (y_t - \mathbf{x_t} \mathbf{A})^2 \label{eq:leastsq}
 \end{align}
 
 Or more conveniently, in matrix format. 
@@ -56,9 +55,10 @@ Or more conveniently, in matrix format.
     \mathbf{x}_{t}
     \end{pmatrix} \\[10pt] 
     L(\mathbf{A}) = (\mathbf{Y} - \mathbf{X}\mathbf{A})^T(\mathbf{Y} - \mathbf{X}\mathbf{A})
+    \label{eq:leastsqmat}
 \end{align}
 
-Differentiating (2.7) with respect to $\mathbf{A}$ and setting equal to zero yields the least squares estimate. 
+Differentiating \ref{eq:leastsqmat} with respect to $\mathbf{A}$ and setting equal to zero yields the least squares estimate. 
 
 \begin{align}
     \frac{\partial L}{\partial \mathbf{A}} &= -2 \mathbf{X}^T \mathbf{Y} + 2\mathbf{X}^T \mathbf{X} \mathbf{A} \\
@@ -71,7 +71,7 @@ The estimated innovation variance $\hat{\sigma^2}$ is simply the sample variance
     \hat{\sigma^2} =\frac{1}{n-p} \sum_{t=p+1}^n e_t^2 = \frac{L(\hat{\mathbf{A}})}{n-p}
 \end{align}
 
-The method above yields an estimate for an AR(p)-process. The order p of the process still has to be determined using various goodness-of-fit criteria such as Akaike Information Criterion. 
+The method above yields an estimate for an AR(p)-process. The order p of the process still has to be determined using appropriate goodness-of-fit criteria such as Akaike Information Criterion \citep{lindgren2014stationary}. 
 
 
 \textcolor{red}{Borde jag ha med Yule-Walker ekvationer här kanske? }
@@ -84,7 +84,7 @@ Another popular time series model is the moving average (MA) model. This model i
     C(z) = c_0 + c_1 z + \cdots + c_q z^q 
 \end{align}
 
-A MA(q)-process is a linear combination of the q previous white noise terms as defined in (2.1, 2.2), plus one new innovation term. 
+A MA(q)-process is a linear combination of the q previous white noise terms as defined in \ref{eq:wne}, \ref{eq:wnc}, plus one new innovation term. 
 
 \begin{align}
     X_t = e_t + c_1 e_{t-1} + \cdots + c_q e_{t-q}
@@ -92,11 +92,19 @@ A MA(q)-process is a linear combination of the q previous white noise terms as d
 
 A common adjustment to the model is to set $c_0 = 1$ and adjust the other coefficients and the innovation variance accordingly. 
 
-An important distinction between the AR(p)-process and the MA(q)-process that the covariance function for the MA(q)-process is zero for time lags $\tau$ larger than the order q of the process. In other words, the value $X_{t+q + 1}$ is independent of the value $X_t$ in a MA(q)-process. 
+An important distinction between the AR(p)-process and the MA(q)-process that the covariance function for the MA(q)-process is zero for time lags $\tau$ larger than the order q of the process. In other words, the value $X_{t+q + 1}$ is independent of the value $X_t$ in an MA(q)-process \citep{lindgren2014stationary}. 
 
 \subsection{Autoregressive Moving Average (ARMA) Model}
 
-The AR-process and MA-process are commonly combined into an ARMA-process. 
+
+The AR-process and MA-process are commonly combined into an ARMA-process. Letting the noise on the right hand side of \ref{eq:ar} be an MA(q)-process, the expression of an ARMA(p,q)-process is achieved. 
+
+\begin{align}
+    X_t + a_1 X_{t-1} + \cdots + a_pX_{t-p} = e_t + c_1 e_{t-1} + \cdots + c_q e_{t-q}
+    \label{eq:arma}
+\end{align}
+
+There are various methods for estimating the coefficients of the polynomials $A(z)$ and $C(z)$. One is a regression approach similar to the method described in \ref{sub:ar}, where regression samples are constructed from the time series and the coefficients are estimated in a least squares sense. Another common estimation procedure is to use maximum likelihood estimation of the parameters. Assuming the noise follows some distribution - most commonly Gaussian - a distribution can be calculated for the model coefficients. The likelihood of obtaining a given set of a parameters can then be calculated and optimized \citep{hamilton1994time}. 
 
 \section{Representation of Language}
 
@@ -127,7 +135,7 @@ Some of these tokens carries information about the beginning or end of the sente
 
 When the sentence is tokenized, it is also common to remove the most frequent words, since these probably doesn't give a lot of information about the difference between sentences. These are called \textit{stop words} and typically include common words such as \textit{a, the, but} etc.
 
-When the sentence has been tokenized, each unique word is given an index. 
+After the tokenization, each unique word is given an index. 
 
 \begin{center}
     \begin{tabular}{rc}
@@ -223,7 +231,7 @@ The known words above are \textit{"gorilla"} and \textit{"visited"} respectively
 According to the authors, the continuous bag-of-words model is faster for training but the continuous skip-gram model is better for infrequent words \textcolor{red}{Från  https://code.google.com/archive/p/word2vec/, hur referera? }. 
 
 
-The word embeddings generated by these methods does carry some information about the semantic relationship of words. As mentioned in the previous section, a desirable function of word representation is to determine whether a word is close to another word in a semantic meaning. This is elegantly represented in word embeddings as the cosine similarity between word vectors. Consider for instance the word \textit{Sweden}. The closest word vectors in the word2vec-vocabulary with respect to cosine similarity are displayed in table 2.1. 
+The word embeddings generated by these methods does carry some information about the semantic relationship of words. As mentioned in the previous section, a desirable function of word representation is to determine whether a word is close to another word in a semantic meaning. This is elegantly represented in word embeddings as the cosine similarity between word vectors. Consider for instance the word \textit{Sweden}. The closest word vectors in the word2vec-vocabulary with respect to cosine similarity are displayed in Table~\ref{tab:cossim}.
 
 \begin{figure}[h!]
     \centering
@@ -238,6 +246,7 @@ The word embeddings generated by these methods does carry some information about
         \hline 
     \end{tabular}
     \caption{Word vectors with the highest cosine similarity to 'Sweden'. Pre-trained embeddings from the word2vec module of the python gensim library were used. }
+\label{tab:cossim}
 \end{figure}
 
 There is also a straight forward interpretation of elementwise addition and subtraction of these word embeddings. In some sense, the $d$-dimensions of the embeddings can be interpreted to be metrics of different properties. For instance, the sum of the embeddings for the words "doctor" and "animal" is most similar to the embedding for the word "veterinarian". There is also reasonable syntactic results when performing simple mathematical operations. It would for instance be expected that the difference between \textit{running} and \textit{run} is similar to the difference between \textit{swimming} and \textit{swim}. This can roughly be expressed as below. 
@@ -248,35 +257,151 @@ There is also a straight forward interpretation of elementwise addition and subt
 Indeed, taking the embeddings for the words and calculating \textit{running - run + swim} results in a vector which is most similar to the embedding for the word \textit{"swimming"} using the 44,000 most common words in the python gensim implementation of word2vec.
 
 
-\subsection{Transformers}
+\section{Classification Models}
+
+The text vectorization methods presented in the previous section enables all classification models that can take a vector as input as possible options for text classification tasks. In these cases, the text vectorization is seen as a step of input pre-processing rather than a part of the model. The focus is mainly on section \ref{sec:nlpmod} with models where word representations are jointly trained with the model, or where the models are specifically appropriate for natural language processing tasks. However, a few more general models are briefly mentioned in section \ref{sec:genmod}. 
+
+\subsection{General Models}\label{sec:genmod} 
+
+\subsubsection*{Logistic Regression}
+
+Logistic regression is a commonly used baseline for machine learning classification tasks. Even though it is an old model, it can still provide good results for emerging fields of classification tasks \citep{chollet2017deep}. 
+
+\subsubsection*{Support Vector Machines}
+
+Support vector machines are a group of models which can be used for both classification and regression. The core idea of a classification support vector machine is to find a suitable decision boundary between data points of different classes. This decision boundary is a hyper plane in some dimension depending on the number of features in the input data. The input data is mapped to a higher dimensional representation where the samples are easier to separate. The best decision boundary is then found by maximizing the distance between the closest samples and the hyper plane in the high dimensional representation. Support vector machines can quickly make predictions on unseen data since the new sample only has to be evaluated against the decision boundary consisting of the hyper plane in the high dimensional representation \citep{chollet2017deep}.   
+
+\subsubsection*{Random Forest}
+
+A random forest classifier is an ensembling technique, using several decision trees and then taking the mode or the average of the output from all of the decision trees. Since a decision tree is prone to overfitting to the training data, taking the average over many trees gives a more robust prediction less sensitive to what training data it is presented with. Random forest has been a widely popular model which tends to work well without much tuning out of the box for shallow machine learning tasks \citep{chollet2017deep}. 
+
+\subsubsection*{Multi Layer Perceptron}
+
+A multi layer perceptron, or feed forward network, is a neural network that seeks to approximate some function $f$. For a classifier, this function would map features $x$ to some prediction $hat{y}$ of the true value $y$. The prediction depends on the weights and biases $w,b$ of the network.  
 
 
-\section{Combining Model Features}
-\textcolor{red}{Combining NLP and ARIMA? I guess this is not needed anymore, since ARIMA is more of a pre-processing step to the NLP-part? }
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Figures/figs-perceptron.pdf}
+    \caption{A single perceptron unit with two inputs $x_1, x_2$, two weights $w_1, w_2$ and one bias $b$. The sigmoid in the prediction node is an activation function usually denoted $\sigma(x)$.}
+    \label{fig:perceptron}
+\end{figure}
+
+The core part of the multi layer perceptron is the single perceptron unit displayed in Figure~\ref{fig:perceptron}. it is easy to see that the prediction $\hat{y}$ is a function of the inputs, weights and biases as $\hat{y} = \sigma(x_1 w_1 + x_2 w_2 + b)$, where $\sigma$ is the activation function denoted by a sigmoid in the figure. The training of the model implies selecting the weight and biases such that the predictions are as accurate as possible. This accuracy is measured by some loss function $J$, which depends on the training samples $(x,y)$ and the weights $w$. The bias term is usually included in the term "weights" for convenience, since it can be seen as a weight for the input value $x_0 = 1$.
+
+A single perceptron unit is not too exciting, but 
 
 
-\section{Performance Metrics}
-The metrics used to evaluate the models are accuracy, recall, precision and F1-score. While these metrics are all somewhat related, they give different insights of performance. For convenience a binary confusion matrix is displayed below. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/ff.PNG}
+    \caption{Overview of a densely connected feed forward network with six inputs, two hidden layers and one output node.}
+    \label{fig:mlp}
+\end{figure}
 
-\begin{figure}
-\centering
-\begin{tabular}{cccccc}
-     \multirow{2}{*}{Actual values} & 0 & \multicolumn{1}{|c|}{True Negatives (TN)} &  \multicolumn{1}{c|}{False Negatives (FN)} \\\cline{2-4}
-      & 1 & \multicolumn{1}{|c|}{False Positives (FP)} & \multicolumn{1}{c|}{True Positives (TP)} \\\cline{2-4}
-     & & \multicolumn{1}{|c|}{0} & \multicolumn{1}{c|}{1} & \\
-      & & \multicolumn{2}{c}{Predictions} & \\
-\end{tabular}
-\caption{Confusion matrix for binary classification.}
-\label{fig:cm}
+\subsection{Natural Language Processing Models}\label{sec:nlpmod}
+
+A drawback which includes all of the models presented in the previous section is that the order of words are not taken into account. Of course, the order can be considered in the pre-processing if some transformation is used (e.g. Sentence-BERT presented in \textcolor{red}{X}), but these transformations usually utilize some of the methods listed below. 
+
+\subsubsection{Recurrent Neural Networks}
+
+A recurrent neural network (RNN) is rather similar to a multi layer perceptron, but it has a method for taking previous inputs into account. The input to an RNN is a sequence of samples, typically of length equal to a sentence where each entry is a word index. One argument for why this makes sense is that when a human is reading a sentence, the previous words are remembered and of large importance for how the sentence is interpreted. We keep the a general idea of the meaning of what we have previously read and adjust the idea depending on the new words in the sentence. Recurrent neural networks work in a rather similar way, storing hidden representations of inputs and conveying that information to the next input in the sequence \citep{Goodfellow-et-al-2016}. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/figs-simplernn.pdf}
+    \caption{General graph of a sequence-to-sequence RNN unfolded through time, where a sequence of inputs $x$ predicts a sequence of outputs $y$. U, V and W are weights that are shared throughout the sequence, independent of the position.}
+    \label{fig:rnn}
+\end{figure}
+
+As seen in Figure~\ref{fig:rnn}, an RNN can be seen as a feed-forward neural network where previous time steps are used as input. Assuming a hidden layer activation function $\sigma_h$ and an output activation function $\sigma_o$, the recurrent nature of the model can be further explained. Let the other notation be as in Figure~\ref{fig:rnn}. 
+
+\begin{align}
+    \hat{y_t} &= \sigma_o(V \cdot h^{(t)}) = \sigma_o(V \cdot  \sigma_h(U x^{(t)} + W h^{(t-1)})) \\
+    h^{(t-1)} &= \sigma_h(Ux^{(t-1)} + W h^{(t-2)})
+\end{align}
+
+Clearly, the prediction $\hat{y}^{(t)}$ is dependent on the previous inputs $x^{(i)}$ and hidden states $h^{(i)}$. 
+
+The model structure is similar for sequence-to-one classifications, i.e. a sequence $(x_i^{(1)}, x_i^{(2)}, ..., x_i^{(l)})$ predicts one label $\hat{y}_i$. Given a sequence length $l$, only the final step $x_i^{(l)}$ provides an output $y_i$. This output is however influenced by the previous inputs $x_i^{(t)}$ through the hidden layers $h^{(t)}$ and the weights $W$, see Figure~\ref{fig:rnns2o}. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/figs-rnn-s2o.pdf}
+    \caption{Schematic graph of a sequence-to-one RNN unfolded through time, where a sequence of inputs $(x^{(1)}, ..., x^{(l)})$ predicts one output $y$.}
+    \label{fig:rnns2o}
+\end{figure}
+
+\subsubsection*{Long Short-Term Memory}
+
+Even though the general idea of the previously described method is widely used, the model is not used precisely as described. The simple RNN-structure suffers from the \textit{vanishing gradient problem}. To understand this problem one must understand how the network is trained, which is outside the scope of this summary. In short, long term dependencies are too many time-steps away to have an impact when the network is trained. In practice, either Long-Short-Term Memory (LSTM) or Gated Recurrent Unit (GRU) is used instead. The main difference is that information that is deemed important is allowed to pass on to later time-steps without too much interference from hidden several dot products and activation functions. This alleviates the vanishing gradient problem, even though the core idea is the same as the previously described simple RNN \citep{chollet2017deep}.
+
+\subsubsection*{Bidirectional LSTM}
+
+As a final note for the recurrent neural network approach, it should be mentioned that when RNNs are used in natural language processing, they are often wrapped with a bidirectional layer. This simply reverts the input sequence and enters the sequence in both the original and the reverse direction to two separate RNNs, usually LSTM or GRU. 
+
+The usefulness of this is particularly intuitive when looking at the network in Figure~\ref{fig:rnn}. When processing the entry $x^{(j)}$, only the entries $t < j$ are known. However, tokens later in the sequence might have an impact on the previous outputs of the model. Bidirectional LSTMs can catch patterns that are overlooked by regular LSTMs.
+
+Bidirectional LSTMs have been widely popular in the field of natural language processing. In 2017, the model behind Google Translate was powered by seven stacked LSTM layers \citep{chollet2017deep}. 
+
+\subsubsection{Transformer}
+
+A paper by \citet{NIPS2017_7181} by the name "Attention is all you need" has been widely influential the last few years in language modelling and machine translation. The authors present a new model - the Transformer - which does away with the recurrence and instead only uses the concept of  attention. One of the problems with recurrent networks is the lack of parallelizability when training the network. The Transformer allows for more parallelization than previous models and consequently trains quicker. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/figs-transformer.pdf}
+    \caption{Schematic graph of a Transformer. }
+    \label{fig:trfo}
+\end{figure}
+
+The core idea is to encode the input into a manageable, general representation and then decode that representation into the sought output. Both the encoder and decoder part consist of 6 identical layers of encoders and decoders.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/The-Transformer-model-architecture.png}
+    \caption{Model architecture of the transformer with the encoder to the left and the decoder to the right. The paper uses $N = 6$ layers for both the encoder and the decoder. \textcolor{red}{OK att använda denna figur?}}
+    \label{fig:tr_arch}
 \end{figure}
 
 
+
+
+
+
+
+
+
+\subsubsection{BERT}
+
+
+
+
+\section{Performance Metrics}
+The metrics used to evaluate the models are accuracy, recall, precision and F1-score. While these metrics are all somewhat related, they give different insights of performance. For convenience a binary confusion matrix is displayed in Figure~\ref{fig:confmat}. 
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{cccc}
+     \multirow{2}{*}{Actual values} & 0 & \multicolumn{1}{|c|}{True Negatives (TN)} &  \multicolumn{1}{c|}{False Negatives (FN)} \\
+     \cline{2-4}
+      & 1 & \multicolumn{1}{|c|}{False Positives (FP)} & \multicolumn{1}{c|}{True Positives (TP)} \\ 
+      \cline{2-4}
+     & & \multicolumn{1}{|c|}{0} & \multicolumn{1}{c|}{1}\\
+     
+     & & \multicolumn{2}{c}{Predictions} \\
+\end{tabular}
+\caption{Confusion matrix for binary classification.}
+\label{fig:confmat}
+\end{figure}
+
 \begin{description}
     \item[Accuracy:] The most intuitive measure of performance, simply the ratio of correct classifications to the total number of classifications. If the labels of a data set are symmetric, this is a good measure of performance. However, if 90 \%  of the samples are of label $a$ and 10\% of label $b$, a model which constantly predicts label $a$ gets an accuracy of 90\%. It doesn't reveal any information about which data is classified incorrectly. 
-    \item[Precision:] The number of correctly classified samples in one class divided by the total number of predictions of that class. The precision $\P$ for class 0 in Figure~\ref{fig:cm} is calculated as $\displaystyle{P = \frac{TN}{TN + FP}}$. 
-    \item[Recall:] The number of correctly classified samples in one class divided by the total number of samples in that class. In other words, a measure of how many percent of a class that was found. In relation to figure 2.2 it is calculated as $\textit{R} = \textit{TN}/(\textit{TN} + \textit{FN})$. Recall is also referred to as \textit{sensitivity} in statistical literature. 
-    \item[F1-score:] A measure which combines precision and recall as the harmonic mean of the two. Calculated as $\textit{F1} = 2 (\textit{R} \cdot \textit{P}) / (\textit{R} + \textit{P})$. An F1-score of 1 implies perfect recall and precision.
+    \item[Precision:] The number of correctly classified samples in one class divided by the total number of predictions of that class. The precision $P$ for class 0 in Figure~\ref{fig:confmat} is calculated as $\displaystyle{P = \frac{TN}{TN + FP}}$. 
+    \item[Recall:] The number of correctly classified samples in one class divided by the total number of samples in that class. In other words, a measure of how many percent of a class that was found. In relation to Figure~\ref{fig:confmat} it is calculated as $\displaystyle{R = \frac{TN}{TN + FN}}$. Recall is also referred to as \textit{sensitivity} in statistical literature. 
+    \item[F1-score:] A measure which combines precision and recall as the harmonic mean of the two. Calculated as $\displaystyle{F1 = 2 \frac{R \cdot P}{R + P}}$. An F1-score of 1 implies perfect recall and precision.
 \end{description}
 
-The precision, recall and F1-score are metrics which are calculated for every class in a classification problem. In order to get a single metric for a set of samples, these can be weighted by the number of true labels of each class. Hence for a binary classification problem, $\textit{F1}_w = \textit{F1}_0 \cdot w_0 + \textit{F1}_1 \cdot w_1$, where $w_i$ is the ratio of labels in class $i$ in the training set \citep{Ting2017}. 
+The precision, recall and F1-score are metrics which are calculated for every class in a classification problem. In order to get a single metric for a set of samples, these can be weighted by the number of true labels of each class. Hence for a binary classification problem, $F1_w = F1_0 \cdot w_0 + F1_1 \cdot w_1$, where $w_i$ is the ratio of labels in class $i$ in the training set \citep{Ting2017}. 
 

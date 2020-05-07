@@ -45,12 +45,13 @@ The tokenization for the GloVe-models first converted all words to lower case an
 
 For non-sequential models, the data is converted from $w \times d$ dimensions to $1 \times d$, where $w$ is the number of words in the concatenated news titles for one day and $d$ is the embedding dimensions, here 300. This is done by taking the element-wise average over all $d$ dimensions. In the models using the embeddings as non-trainable pre-processing, this is simply done before the data is fed into the model. In the models where the training of the embeddings are continued, a custom layer in Keras computes the element-wise average after the embedding layer, where the data has been inputted as token indices and the pre-trained embeddings are set in the embedding layer.
 
-For sequential models, the order of words in the titles is kept intact. The number of words in the news titles for one day is shown in \textcolor{red}{figure 3.1.} In order for each text sample to have the same size, a maximum sentence length is set. Longer sequences are cut of, shorter sequences are padded with zeros. The maximum sentence length is set to 800 for the news data, which well covers the majority of the samples. 
+For sequential models, the order of words in the titles is kept intact. The number of words in the news titles for one day is shown in Figure~\ref{fig:num_words}. In order for each text sample to have the same size, a maximum sentence length is set. Longer sequences are cut of, shorter sequences are padded with zeros. The maximum sentence length is set to 800 for the news data, which well covers the majority of the samples. 
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{Figures/wordcount.jpg}
 \caption{Histogram of the number of words in the concatenated news titles for one day. }
+\label{fig:num_words}
 \end{figure}
 
 \subsection{BERT}
@@ -83,13 +84,9 @@ A support vector machine (SVM) is used with similar motivation as for the logist
 
 \subsubsection*{Feed-forward Network}
 
-A densely connected feed-forward network is evaluated with varying number of hidden layers, nodes and dropout rate. The loss function for binary classification is a sigmoid function defined as $f(x) = 1/(1+e^{-x})$. The model is trained using optimization algorithms RMSprop and Adam, evaluated by cross validation as shown in \textcolor{red}{appendix X}.
+A densely connected feed-forward network is evaluated with varying number of hidden layers, nodes and dropout rate. The loss function is binary cross entropy, defined as $L(y,\hat{y}) = -\frac{1}{N} \sum_{i=1}^N y_i \log{(p(\hat{y}_i))} + (1 - y_i) \log{(1 - p(\hat{y}_i))}$. \textcolor{red}{Should have this under theoretical background} The model is trained using optimization algorithms RMSprop and Adam, evaluated by cross validation as shown in \textcolor{red}{appendix X}.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{Figures/ff.PNG}
-    \caption{Overview of a densely connected feed forward network with six inputs, two hidden layers and one output node.}
-\end{figure}
+
 
 The feed-forward network is implemented using the Keras-library. 
 
@@ -110,9 +107,10 @@ The feed-forward network which takes sequential inputs has an embedded layer as 
     \centering
     \includegraphics[width=0.3\textwidth]{Figures/figs-ff_emb.pdf}
     \caption{Schematic overview of the used feed-forward network with embedded inputs. $b$ is the batch size, $m$ is the maximum sequence length, $d$ is the embedding dimension and $d_n$ is the number of nodes in the dense layer.}
+\label{fig:emb_ff}
 \end{figure}
 
-This tensor is then passed into a regular feed-forward network with rectified linear unit activation function and dropout regularization, and finally to an output layer with a sigmoid activation function. The general structure is seen in \textcolor{red}{figure 3.3}. 
+This tensor is then passed into a regular feed-forward network with rectified linear unit activation function and dropout regularization, and finally to an output layer with a sigmoid activation function. The general structure is seen in Figure~\ref{fig:emb_ff}. 
 
 \subsubsection*{Bidirectional LSTM}
 
