@@ -18,7 +18,7 @@ The IMDb dataset is a commonly used benchmarking dataset for binary classificati
 
 The corpus used for this project consists of 109,110 financial news articles from Reuters. It was first compiled and used by \citet{ding2014using} for predicting stock price direction. Only the titles of the news data is used to train the model, as suggested by \citet{ding2014using}. The reasoning behind this is that including the contents of the articles does not significantly improve the model. 
 
-The data contains financial news regarding the US market from the 10th of October 2006 to the 11th of November 2013, with approximately 5 - 50 news articles per day and is \textcolor{red}{publicly available. How do i cite this? Links under appendix or references? \url{https://github.com/duynht/financial-news-dataset}}
+The data contains financial news regarding the US market from the 10th of October 2006 to the 11th of November 2013, with approximately 5 - 50 news articles per day and is publicly available\footnote{Available at \url{https://github.com/duynht/financial-news-dataset}.}.
 
 \subsubsection*{Pre-Processing}
 
@@ -35,7 +35,7 @@ The news dataset contains 27,617 unique words when converted to lower case.
 
 \subsection{TF-IDF}
 
-Term Frequency - Inverse Document Frequency (TF-IDF) is purely a pre-processing technique which outputs large dimensional vectors of the same length as the vocabulary size. This can then be fed into any model. As stated in the previous chapter the order of words is not preserved in this technique, which does not make it suitable to use as input to a recurrent network. 
+Term Frequency - Inverse Document Frequency (TF-IDF) is purely a pre-processing technique which outputs large dimensional vectors of the same length as the vocabulary size. This can then be fed into any model. As stated in the previous chapter the order of words is not preserved in this technique, which does not make it suitable to use as input to a recurrent network. A tokenizer from the scikit-learn library is used to transform the texts into TF-IDF vectors. Even though TF-IDF deals with frequency of words, there is still a computational benefit of having a restricted vocabulary, since this is equal to the input dimension. An appropriate vocabulary size is found by evaluating the validation accuracy for different sizes using logistic regression. This is because logistic regression is optimized quickly and can give an indication of when important information for classifying is lost. For the IMDb dataset, this was found to be 10000 words. 
 
 \subsection{GloVe}
 
@@ -54,9 +54,9 @@ For sequential models, the order of words in the titles is kept intact. The numb
 \label{fig:num_words}
 \end{figure}
 
-\subsection{BERT}
+\subsection{Sentence-BERT}
 
-
+A pre-trained BERT model from tensorflow-hub is used, implemented as a Keras-layer. No pre training is performed, but the final layers are fine-trained during the training by setting the parameters in the final encoder layers as trainable. This model takes is computationally demanding, so hyperparameter testing is restricted. 
 
 
 
@@ -68,11 +68,10 @@ For an imbalanced rather small dataset, a random classifier can provide a basic 
 
 The random classifier used in this project only relies on the target variables, so it is not interesting to classify it as sequential or not.  
 
-\subsection{Non-sequential Input Models}
+\subsection{Tree-based \& Feed Forward Models}
 
 These models are only used with non-sequential data as input, i.e. TF-IDF, average GloVe-embeddings and Sentence-BERT. These vectorizations typically have dimensions 5,000 - 20,000 (TF-IDF), 300 (GloVe) and 768 (Sentence-BERT). 
 
-\textcolor{red}{Hur väl måste dessa modeller motiveras?}
 
 \subsubsection*{Logistic Regression}
 
@@ -84,24 +83,11 @@ A support vector machine (SVM) is used with similar motivation as for the logist
 
 \subsubsection*{Feed-forward Network}
 
-A densely connected feed-forward network is evaluated with varying number of hidden layers, nodes and dropout rate. The loss function is binary cross entropy, defined as $L(y,\hat{y}) = -\frac{1}{N} \sum_{i=1}^N y_i \log{(p(\hat{y}_i))} + (1 - y_i) \log{(1 - p(\hat{y}_i))}$. \textcolor{red}{Should have this under theoretical background} The model is trained using optimization algorithms RMSprop and Adam, evaluated by cross validation as shown in \textcolor{red}{appendix X}.
+A densely connected feed-forward network is evaluated with varying number of hidden layers, nodes and dropout rate. The loss function is binary cross entropy. The model is trained using optimization algorithms RMSprop and Adam, evaluated by cross validation as shown in \textcolor{red}{appendix X}.
 
+The input to the model is either sequential data into an embedding layer (see Figure~\ref{fig:emb_ff}) - if the embeddings are continuously trained - or as pre-processed data with static embeddings. For the latter case, this is just a regular multi layer perceptron with rectified linear unit activation function and dropout regularization. The output layer is a single node with a sigmoid activation function.
 
-
-The feed-forward network is implemented using the Keras-library. 
-
-
-\subsubsection*{Random Forest / XGBoost / LDA}
-\textcolor{red}{Finns det någon vettig vits med att ha med dessa? Typ samma syfte \& resultat som logreg/svm, och har fokuserat främst på neuronnätverk. }
-
-
-\subsection{Sequential Input Models}
-
-These sequential models all allow further training of embedding parameters, since the first input layer is either a regular embedding layer or a BERT-embedding layer. The input dimensions are $w \times d$, where $w$ is the maximum sequence length and $d$ is the dimension of the embedding. 
-
-\subsubsection*{Feed-forward Network}
-
-The feed-forward network which takes sequential inputs has an embedded layer as the first layer. The weights in this layers are set to the pre-trained GloVe embeddings, and are then jointly trained continuously with the other parameters in the model. A maximum sequence length is specified and an average is taken element-wise over all the 300 embedding dimensions. The average is taken where the sum of the absolute value of the embedding vector is non-zero, i.e. the position in the sequence vector actually contains a word.
+The model which takes sequential inputs has an embedded layer as the first layer. The weights in this layers are set to the pre-trained GloVe embeddings, and are then jointly trained with the other parameters in the model. A maximum sequence length is specified and an average is taken element-wise over all the 300 embedding dimensions. The average is taken where the sum of the absolute value of the embedding vector is non-zero, i.e. the positions in the sequence vector that actually contain a word.
 
 \begin{figure}[H]
     \centering
@@ -110,28 +96,35 @@ The feed-forward network which takes sequential inputs has an embedded layer as 
 \label{fig:emb_ff}
 \end{figure}
 
-This tensor is then passed into a regular feed-forward network with rectified linear unit activation function and dropout regularization, and finally to an output layer with a sigmoid activation function. The general structure is seen in Figure~\ref{fig:emb_ff}. 
+This tensor is then passed into a regular multi layer perceptron as described previously.
 
-\subsubsection*{Bidirectional LSTM}
+The feed-forward network is implemented using the Keras-library. 
 
-The bidirectional LSTM has the same input structure as the feed-forward network, but rather than an averaging layer over all dimensions, an LSTM layer is applied. This preserves the sequential structure of the inputs and enables the model to take the order of words into account. 
+\subsection{Recurrent Models}
 
-The LSTM layer is wrapped in a bidirectional layer, which 
+These sequential models all allow further training of embedding parameters, since the first input layer is a regular embedding layer. The input dimensions are $w \times d$, where $w$ is the maximum sequence length and $d$ is the dimension of the embedding. 
+
+\subsubsection*{Bidirectional LSTM / GRU}
+
+The bidirectional LSTM/GRU has the same input structure as the feed-forward network, but rather than an averaging layer over all dimensions, an LSTM layer is applied. This preserves the sequential structure of the inputs and enables the model to take the order of words into account. 
+
+The LSTM/GRU layer is wrapped in a bidirectional layer, which implies the input sequences are processed both from left-to-right and from right-to-left. Since this configuration takes a lot of time to train, hyper parameters optimization is performed by manually testing a few parameters.  
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{Figures/figs-bidir-lstm.pdf}
-    \caption{Schematic overview of a bidirectional LSTM network with sequential input data. $b$ is the batch size, $m$ is the maximum sequence length, $d$ is the embedding dimension and $l_n$ is the number of nodes in the LSTM-layer.}
+    \caption{Schematic overview of a bidirectional LSTM network with sequential input data. $b$ is the batch size, $m$ is the maximum sequence length, $d$ is the embedding dimension and $l_n$ is the number of nodes in the LSTM-layer. The same structure holds for the GRU-architecture.}
 \end{figure}
 
-\subsubsection*{BERT + LSTM}
+
+\subsection{Transformer Models}
 
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{Figures/figs-bert-lstm.pdf}
-    \caption{Schematic overview of the used bidirectional LSTM network with sequential input data. $b$ is the batch size, $m$ is the maximum sequence length, $d$ is the BERT embedding dimension and $l_n$ is the number of nodes in the LSTM-layer.}
+    \includegraphics[width=0.4\textwidth]{Figures/figs-bert-ff.pdf}
+    \caption{Schematic overview over the architecture of the BERT model. $b$ is the batch size, $m$ is the maximum sequence length, $d_b$ is the BERT embedding dimension and $d_n$ is the number of nodes in the dense layer.}
 \end{figure}
 
 

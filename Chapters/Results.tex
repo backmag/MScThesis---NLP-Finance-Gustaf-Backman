@@ -1,4 +1,80 @@
 \chapter{Results}
 
-\section{Model Performance}
-\section{Comparison}
+\section{Benchmark Evaluation}
+
+The results on the IMDb dataset for benchmarking are presented in Table~\ref{tab:imdb}
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llr}
+    \hline
+        \multicolumn{2}{c}{\textbf{Model}} & \textbf{Test acc} \\
+        \hline \hline   
+        \multirow{4}{*}{TF-IDF} & Random Forest & 85.6 \\
+        & SVM & 89.5 \\
+        & Logistic Regression & 89.1 \\
+        & MLP & 89.2 \\
+        \hline 
+        \multirow{4}{*}{GloVe (pretrained)} & Random Forest & \\
+        & SVM & 84.1 \\
+        & Logistic Regression & 85.2 \\
+        & MLP & 84.1 \\
+        \hline 
+        \multirow{3}{*}{GloVe (jointly trained)} & MLP & 88.2 \\
+        & LSTM & \\
+        & GRU & \\
+        \hline 
+        \multirow{4}{*}{Sentence-BERT} & Random Forest & 87.1 \\
+        & SVM & 90.0 \\
+        & Logistic Regression & 90.7 \\
+        & MLP & 90.1 \\
+        \hline
+        BERT & &  \\
+        \hline
+    \end{tabular}
+\caption{Performance of used methods on the IMDb dataset.}
+\label{tab:imdb}
+\end{table}
+
+
+\section{Current Day Predictions}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llrrrrrr}
+    \hline
+        \multicolumn{2}{c}{\multirow{2}{*}{\textbf{Model}}} & \multicolumn{2}{c}{1 year} & \multicolumn{2}{c}{3 year} & \multicolumn{2}{c}{S\&P} \\
+      & & \textbf{Val} & \textbf{Test} & \textbf{Val} & \textbf{Test} & \textbf{Val} & \textbf{Test} \\
+        \hline \hline   
+        \multirow{5}{*}{TF-IDF} & Random Classifier & & \\
+        & Random Forest & & \\
+        & SVM & & \\
+        & Logistic Regression & & \\
+        & MLP & & \\
+        \hline 
+        \multirow{5}{*}{GloVe (pretrain)} & Random Classifier & & \\
+        & Random Forest & & \\
+        & SVM & & \\
+        & Logistic Regression & & \\
+        & MLP & & \\
+        \hline 
+        \multirow{3}{*}{GloVe (jointly trained)} & MLP & & \\
+        & LSTM & & \\
+        & MÄÄÄ & & \\
+        \hline 
+        \multirow{5}{*}{Sentence-BERT} & Random Classifier & & \\
+        & Random Forest & & \\
+        & SVM & & \\
+        & Logistic Regression & & \\
+        & MLP & & \\
+        \hline
+        BERT & & & \\
+        \hline
+    \end{tabular}
+\caption{Performance of used methods on classifying whether the price of an index has increased from day $k-1$ to $k$ given the news titles from day $k$.}
+\label{tab:rescdp}
+\end{table}
+
+\section{Next Day Predictions}
+\section{ARMA Direction Predictions}
