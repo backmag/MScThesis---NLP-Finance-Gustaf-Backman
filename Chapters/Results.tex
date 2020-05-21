@@ -9,7 +9,7 @@ The results on the IMDb dataset for benchmarking are presented in Table~\ref{tab
     \centering
     \begin{tabular}{llr}
     \hline
-        \multicolumn{2}{c}{\textbf{Model}} & \textbf{Test acc} \\
+        \multicolumn{2}{c}{\textbf{Model}} & \textbf{Acc} \\
         \hline \hline   
         \multirow{4}{*}{TF-IDF} & Random Forest & 85.6 \\
         & SVM & 89.5 \\
@@ -21,16 +21,15 @@ The results on the IMDb dataset for benchmarking are presented in Table~\ref{tab
         & Logistic Regression & 85.2 \\
         & MLP & 84.1 \\
         \hline 
-        \multirow{3}{*}{GloVe (jointly trained)} & MLP & 88.2 \\
+        \multirow{2}{*}{GloVe (jointly trained)} & MLP & 88.2 \\
         & LSTM & \\
-        & GRU & \\
         \hline 
         \multirow{4}{*}{Sentence-BERT} & Random Forest & 87.1 \\
         & SVM & 90.0 \\
         & Logistic Regression & 90.7 \\
         & MLP & 90.1 \\
         \hline
-        BERT & &  \\
+        BERT & & 91.0  \\
         \hline
     \end{tabular}
 \caption{Performance of used methods on the IMDb dataset.}
@@ -44,32 +43,31 @@ The results on the IMDb dataset for benchmarking are presented in Table~\ref{tab
     \centering
     \begin{tabular}{llrrrrrr}
     \hline
-        \multicolumn{2}{c}{\multirow{2}{*}{\textbf{Model}}} & \multicolumn{2}{c}{1 year} & \multicolumn{2}{c}{3 year} & \multicolumn{2}{c}{S\&P} \\
-      & & \textbf{Val} & \textbf{Test} & \textbf{Val} & \textbf{Test} & \textbf{Val} & \textbf{Test} \\
+        \multicolumn{2}{c}{\multirow{2}{*}{\textbf{Model}}} & \multicolumn{2}{c}{\textbf{1 year}} & \multicolumn{2}{c}{\textbf{3 year}} & \multicolumn{2}{c}{\textbf{S\&P}} \\
+      & & \textbf{F1} & \textbf{Acc} & \textbf{F1} & \textbf{Acc} & \textbf{F1} & \textbf{Acc} \\
         \hline \hline   
-        \multirow{5}{*}{TF-IDF} & Random Classifier & & \\
-        & Random Forest & & \\
-        & SVM & & \\
-        & Logistic Regression & & \\
-        & MLP & & \\
+        \multirow{2}{*}{Random Classifier} & Most Frequent & 0.56 & 68.9 & 0.44 & 59.4 & 0.37 & 53.6 \\
+        & Stratified & 0.56 & 57.4 & 0.56 & 68.9 & 0.50 & 53.3 \\
         \hline 
-        \multirow{5}{*}{GloVe (pretrain)} & Random Classifier & & \\
-        & Random Forest & & \\
-        & SVM & & \\
-        & Logistic Regression & & \\
-        & MLP & & \\
+        \multirow{4}{*}{TF-IDF} & Random Forest & 0.56 & 68.9 & 0.47 & 57.3 & 0.56 & 60.2 \\
+        & SVM & 0.56 & 68.9 & 0.46 & 59.8 & 0.55 & 59.1 \\
+        & Logistic Regression & 0.56 & 68.7 & 0.48 & 58.8 & 0.58 & 59.9  \\
+        & MLP & 0.56 & 68.7 & 0.44 & 59.1 & 0.57 & 57.6 \\
         \hline 
-        \multirow{3}{*}{GloVe (jointly trained)} & MLP & & \\
-        & LSTM & & \\
-        & MÄÄÄ & & \\
+        \multirow{4}{*}{GloVe (pretrain)} & Random Forest & 0.57 & 67.6 & 0.47 & 58.5 & 0.56 & 58.2 \\
+        & SVM & 0.56 & 68.9 & 0.44 & 59.0 & 0.37 & 53.6 \\
+        & Logistic Regression & 0.56 & 68.6 & 0.47 & 59.0 & 0.54 & 57.3 \\
+        & MLP & 0.56 & 68.9 & 0.45 & 59.3 & 0.48 & 56.5 \\
         \hline 
-        \multirow{5}{*}{Sentence-BERT} & Random Classifier & & \\
-        & Random Forest & & \\
-        & SVM & & \\
-        & Logistic Regression & & \\
-        & MLP & & \\
+        \multirow{2}{*}{GloVe (jointly trained)} & MLP & 0.56 & 68.9 & 0.44 & 59.4 & 0.49 & 55.7 \\
+        & LSTM & 0.56 & 67.5 & 0.44 & 59.1 & 0.49 & 49.2  \\
+        \hline 
+        \multirow{4}{*}{Sentence-BERT} & Random Forest & 0.56 & 66.6 & 0.55 & 60.4 & 0.56 & 56.8 \\
+        & SVM & 0.56 & 68.9 & 0.44 & 59.4 & 0.55 & 57.0 \\
+        & Logistic Regression & 0.63 & 67.2 & 0.58 & 59.4 & 0.56 & 56.7  \\
+        & MLP & 0.56 & 68.9 & 0.57 & 58.4 & 0.57 & 56.8 \\
         \hline
-        BERT & & & \\
+        BERT & & 0.56 & 68.9 \\
         \hline
     \end{tabular}
 \caption{Performance of used methods on classifying whether the price of an index has increased from day $k-1$ to $k$ given the news titles from day $k$.}
