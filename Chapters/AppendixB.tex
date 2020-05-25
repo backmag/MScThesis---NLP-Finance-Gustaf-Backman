@@ -1,0 +1,57 @@
+\chapter{Hyperparameter Optimization}\label{appendix:B}
+
+The tested range of hyperparameters and the optimal set found are listed in this appendix. The tuning was done for random forests and multi-layer perceptrons. 
+
+\section{Random Forest}
+
+Two hyperparameters were trained for the random forest model, in the following ranges.  
+\begin{itemize}
+    \item $\textbf{max\_depth}: $ None, 50, 100
+    \item $\textbf{n\_estimators}: $ 250, 500, 750, 1000
+\end{itemize}
+
+The best hyperparameters found through a grid search are displayed in Table \ref{tab:rf_hyper_cd}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{llrr}
+          & & \textbf{max\_depth} & \textbf{n\_estimators} \\
+         \hline \hline
+         \multirow{3}{*}{1 year rate} & TF-IDF & None & 250  \\
+         & GloVe & 50 & 1000   \\
+         & SBERT & 100 & 250  \\
+         \hline 
+         \multirow{3}{*}{3 year rate} & TF-IDF & 100 & 250  \\
+         & GloVe & None & 1000  \\
+         & SBERT & 100 & 250  \\
+         \hline 
+         \multirow{3}{*}{S\&P 500} & TF-IDF & 50 & 500  \\
+         & GloVe & 100 & 500  \\
+         & SBERT & None & 500  \\
+         \hline 
+    \end{tabular}
+    \caption{Used hyperparameters for random forest model on current day predictions as presented in Table \ref{tab:rescdp}.}
+    \label{tab:rf_hyper_cd}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{llrr}
+          & & \textbf{max\_depth} & \textbf{n\_estimators} \\
+         \hline \hline
+         \multirow{3}{*}{1 year rate} & TF-IDF & None & 500   \\
+         & GloVe & 50 & 250    \\
+         & SBERT & 50 & 250   \\
+         \hline 
+         \multirow{3}{*}{3 year rate} & TF-IDF & None & 250   \\
+         & GloVe & 50 & 750 \\
+         & SBERT & None & 750 \\
+         \hline 
+         \multirow{3}{*}{S\&P 500} & TF-IDF & 50 & 500 \\
+         & GloVe & None & 250 \\
+         & SBERT & 50 & 750 \\
+         \hline 
+    \end{tabular}
+    \caption{Used hyperparameters for random forest model on next day predictions as presented in Table \ref{tab:resndp}.}
+    \label{tab:rf_hyper_nd}
+\end{table}

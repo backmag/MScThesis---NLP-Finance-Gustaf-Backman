@@ -113,10 +113,9 @@ Language has enabled people to exchange information in an efficient manner for t
     \item \textit{Sarcasm/irony}. This can be hard enough to detect for humans. The phrase \textit{That's just what I needed today!} might actually mean what it literally says, or just the opposite.
 \end{enumerate}
 
-Methods used for representing words deal with these difficulties in different ways or not at all. For some shallow, more simple NLP tasks, a model might perform well without understanding homonyms or that two words are closely related. For more complex tasks such as sequence-to-sequence translation of language, a deeper understanding is naturally needed. 
+Methods used for representing words deal with these difficulties in different ways or not at all. For some shallow, more simple NLP tasks, a model might perform well without understanding homonyms or that two words are closely related. For more complex tasks such as sequence-to-sequence translation of language, a deeper understanding is naturally needed.
 
 \subsection{One-hot Encoding}
-\textcolor{red}{SKIRV OM }
 The most intuitive way to turn words into numerical vectors is probably one-hot encoding. Thi is simply done by giving all unique words in a text an index and then letting the index represent the word. Consider a training example $x_i$ as the sentence below:
 
 \begin{quote}
@@ -523,7 +522,7 @@ There are many similarities between the encoder and decoder, but some things dif
 
 One large difference to the encoding part is that the self-attention layers are only allowed to attend to previous inputs, i.e. words to the left. This is done by setting the entries for words to the right of the currently processed word to $-\infty$ in the dot product of $Q$ and $K$ before the softmax as seen in Figure~\ref{fig:attflow}. This ensures no attention is given to latter words in the sentence in the decoding part. The decoder does however have access to the key and value vectors from all of the words in the input. A general flow chart of how words influence each other in a translation task is shown in Figure~\ref{fig:selfatts}.
 
-\subsubsection{BERT}
+\subsubsection{BERT}\label{sec:bert_theory}
 
 The transformer presented by \citeauthor{NIPS2017_7181} was influential for several other models. \citeauthor{devlin2018bert} presented the language representation model BERT in \citeyear{devlin2018bert}. BERT is short for Bidirectional Encoder Representations from Transformers. This model achieved new state-of-the-art results on eleven NLP tasks. The success of BERT is largey due to the fact that it can be used for a wide variety of NLP tasks with only small changes to model architecture and further training.
 
