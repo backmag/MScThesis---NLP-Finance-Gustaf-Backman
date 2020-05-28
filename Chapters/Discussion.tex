@@ -1,4 +1,77 @@
 \chapter{Discussion}
 
-\section{Model Evaluation}
+This chapter discusses the findings in Chapter \ref{chap:results} and arguments for potential implications of the results. 
+
+Firstly, an evaluation of the models in the IMDb-task is briefly made. This is followed by evaluations of the models in relation to the financial tasks in Sections \ref{sec:eval_index} and \ref{sec:eval_arma}. A section on the used data follows. The chapter is ended with some general conclusions and recommendations for further research. 
+
+\section{Evaluation of IMDb performance}
+
+The results on the IMDb dataset showed that BERT was the most fitting model for the task, with 91\% accuracy. SBERT with logistic regression was however quite close, at a fraction of the training cost for BERT.
+
+Another interesting note is that continued training of GloVe embeddings gave a significant improvement over static embeddings -- from 84.1\% to 88.2\%. 
+
+The best model of the traditional, non-transformer based models was the Bidirectional LSTM at 90.1\%. This model was also computationally demanding, needing more than 24 hours to converge. 
+
+It is safe to say that the collection of models are capable of capturing meaningful information from text data.
+
+\section{Index Direction Evaluation}\label{sec:eval_index}
+
+This section discusses the results presented in Tables \ref{tab:rescdp} and \ref{tab:resndp}.
+
+\subsection{Model Evaluation}
+
+No model applied to the 1 year and 3 year rates gave any significant performance improvement over the random baselines. Reflections about the difference between time series is further elaborated in Section \ref{sec:disc_data}. 
+
+Several models did however show a predictive ability on the S\&P 500 index, both for current day prediction and next day prediction. The simplest of the feature extraction techniques -- TF-IDF -- provided several results in the top segment for both tasks. Random forest and logistic regression performed well for both tasks, while SVM was less successful.
+
+A few thoughts on why TF-IDF gave good results on the tasks follows. 
+\begin{description}
+    \item[Concatenated titles.] The fact that the headlines are simply added up into a long string might be a benefit for TF-IDF compared to sequential models such as bidirectional LSTM and BERT. While the order of words in each sentence matters, the order of sentences should not matter too much. TF-IDF does not take order into account, and is therefore insensitive to whether the sentences are concatenated in a certain order. 
+    \item[Not very semantically demanding. ] The purpose of news titles are generally to distill the information in an article into a few words. It seems likely that titles are clear and succinct, which gives unambiguous formulations. Words like ``outperform'' and ``excel'' seem likely to be features that imply an upward trajectory, as opposed to ``bankcruptcy'' or ``illicit''. 
+\end{description}
+
+It is also noteworthy that the BERT model was at least 100 times more computationally demanding than the models using TF-IDF or Sentence-BERT as features. Nevertheless, it did not give any impressive results. 
+
+Comparing the two tasks -- predicting today's vs. tomorrows index movement -- suggests that predicting the movement of today can be done with a slightly higher accuracy. There is however not a significant difference given the small test set. However, it is a reassuring result that the accuracy for current day prediction is slightly higher than for next day prediction. 
+
+\subsection{Task Evaluation}
+
+The task of predicting the movement of financial indices in general is obviously highly popular, since there is an apparent possibility of profit. The effective market hypothesis introduced by \citeauthor{malkiel1970efficient} claims that the price of an asset reflects all available information regarding that asset. This would imply that analyzing historical news is pointless, since this information is already reflected in the price. An argument for why natural language processing is useful in the context of the effective market hypothesis is the sheer speed of the information retrieval. Even though the models' understanding of language is not as good as a humans, it is capable of processing a lot of information quickly. It can also be useful simply for reducing costs, compared to an employee.
+
+\section{ARMA Direction Evaluation}\label{sec:eval_arma}
+
+This section discusses the results presented in Tables \ref{tab:res_arma_cdp} and \ref{tab:res_arma_ndp}.
+
+\subsection{Model Evaluation}
+
+Similarly to the index direction task, the models reached the highest performance over the random baseline for the S\&P 500 index. The model results are however less ambiguous for the ARMA direction task than for the index direction task. SBERT is the feature extraction method that gives the best performance. When paired with logistic regression, it seems to give decent results for all tasks and series. The confusion matrices in Figures \ref{tab:confmat_arma_cdp} and \ref{tab:confmat_arma_ndp} also shows that the model seem to make reasonable predictions, compared to TF-IDF + MLP for S\&P 500 shown in Table \ref{tab:confmat_cdp} which just predicts the most frequent label.
+
+The accuracy of 64.1 \% seen in Table \ref{tab:res_arma_ndp} for SBERT + logistic regression is quite uncertain due to the small data set. This does however suggest that the news titles have some predictive power on the validity of the ARMA-prediction. A use case for this could be as a warning system for when a more sophisticated time series model seems to make a suspicious prediction. The NLP-model can issue a warning when some probability threshold $\alpha$ is exceeded. For instance, using SBERT as feature extractor and logistic regression with a threshold value of $\alpha = 0.8$, an accuracy of 74 \% is achieved. This implies the model only makes predictions if its more than 80 \% certain. Given more data, this could possibly be a usable tool. 
+
+\subsection{Task Evaluation}
+
+The purpose of this task was to evaluate if there is information in financial news headlines which improves the performance of a traditional time series model. While the short response is \emph{yes}, a few clarifications should be made about the limitations of conclusions that can be drawn. 
+
+\begin{description}
+    \item[Small data set.] The data set is small -- 1,846 samples in total. This implies high variance in how well the test error approximates the actual error rate on unseen data. Furthermore, it increases the risk of overfitting to the training data. This is elaborated further in Section \ref{sec:disc_data}.
+    \item[Limited time series model.] The fitted ARMA(1,1)-model is rather simple and seldom used in practice for financial forecasting. Evaluating financial news in conjunction with a more sophisticated model with dependency structure between assets would be more realistic. 
+\end{description}
+
+
+
+\section{Data Evaluation}\label{sec:disc_data}
+This section discusses the used data sets and implications for how the results can be interpreted. 
+
+\subsection{News Data}
+\textcolor{red}{Extraordinär tidsperiod}
+
+\subsection{Financial Data}
+\textcolor{red}{Ev oklara tidsserier? Vore intressant med kanske enskild aktie osv }
+
+\section{Conclusions}
+
+While it is difficult to make general and certain conclusions given the small size of the data set, the results are certainly intriguing. My findings confirm that news titles does have some predictive power on the S\&P 500 index, as well as on the validity of ARMA-models fitted to both treasury rates and S\&P 500. The performance is however most noticeable for S\&P 500. 
+
 \section{Further Improvement}
+
+JÄMFÖR MED BÄTTRE TIDSSERIEMODELL 

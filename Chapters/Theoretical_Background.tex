@@ -170,13 +170,13 @@ Note that even though the order of words is the same in the vector as in the ori
 
 There are variations of BOW that have larger representing power, such as including the count of words in the sentence rather than if it exists or not. A problem with this approach is that words that are more frequent in sentences get a higher value than words that are not as frequent, even if less frequent words might be more interesting for the context. A variation that deals with this limitation is the TF-IDF representation. 
 
-Term Frequency-Inverse Document Frequency (TF-IDF) is a widely used technique for normalizing text data. It uses the same underlying principles as BOW but with a weight normalization. As the name suggests, the value for a certain word is increased for its frequency in a document but decreased for the frequency in the whole document which is considered\marginpar{I am not sure I understand this. Normally tfifd is not computed per sentence, but tf is per document and idf is for the whole collection}. So, a word which has a low frequency in a full corpus is considered more important than a word with low frequency. The entry $j$ in a vector $x_i$ is then calculated as the product of the term frequency weight and the inverse document frequency weight. 
+Term Frequency-Inverse Document Frequency (TF-IDF) is a widely used technique for normalizing text data. It uses the same underlying principles as BOW but with a weight normalization. As the name suggests, the value for a certain word is increased for its frequency in a document but decreased for the frequency in the full corpus. So, a word which has a low frequency in a full corpus is considered more important than a word with high frequency. The entry for a word with index $j$ in a sample vector $x_i$ is then calculated as the product of the term frequency weight and the inverse document frequency weight. 
 
 \begin{align*}
     x_{ij} = f_s(t,f) \cdot f_d(t,F)
 \end{align*}
 
-For a term $t$ with frequency $f$ in sequence $i$ and frequency $F$ in the whole document\marginpar{This is not the case in general. Idf is for the corpus}. The function $f_s$ is some function increasing with the number of words $j$ in the sentence and $f_d$ is decreasing with the number of words in the full document. Examples of these functions can be as below. 
+For a term $t$ with frequency $f$ in sequence $i$ and frequency $F$ in the whole corpus. The function $f_s$ is some function increasing with the number of words $j$ in the sentence and $f_d$ is decreasing with the number of words in the full corpus. Examples of these functions can be as below. 
 
 \begin{align*}
     f_s &= \frac{\mid \{ j \in (1, \hdots , L_i) : s_{ij} = t  \} \mid}{L_i} \\
@@ -197,7 +197,7 @@ All of the problems above are addressed by the concept of word embeddings in the
 \subsection{Word Embeddings}
 As opposed to the sparse representation of one-hot encoding, \textit{word embeddings} are dense, continuous vector representations of words. The dimension of a one-hot encoded vector is corresponds to the size of the vocabulary (generally 20,000 or greater), whereas word embedding vectors typically have 100 to 1000 dimensions \citep{chollet2017deep}.
 
-A major breakthrough on the topic of word embeddings was made by \citet{mikolov2013efficient} where efficient methods of training a model were introduced, popularised as the \textit{word2vec} model. \textit{continuous bag-of-words} and \textit{continuous skip-gram} are two model architectures for training the $d$-dimensional vector representations of words. Both methods share the notion that the meaning of a word is determined by the words it is commonly used together with. The representations are learned by constructing fake\marginpar{this is not fake. It is just a language modeling task} tasks which are then solved by a neural network. This task is generally to predict neighboring words of a given word. The weights in the trained neural network is the interesting component\marginpar{You should rephrase this. The weights are the embedding vectors}.
+A major breakthrough on the topic of word embeddings was made by \citet{mikolov2013efficient} where efficient methods of training a model were introduced, popularised as the \textit{word2vec} model. \textit{continuous bag-of-words} and \textit{continuous skip-gram} are two model architectures for training the $d$-dimensional vector representations of words. Both methods share the notion that the meaning of a word is determined by the words it is commonly used together with. The representations are learned by constructing a language modeling task which is solved by a neural network. The task is generally to predict neighboring words of a given word. The weights into the hidden layer of the trained neural network are the embeddings for a word. 
 
 \textit{Continuous bag-of-words} are trained by predicting the missing word in a sequence of words of a given window size. The order of the words is not taken into consideration other than for deciding which words to include in one sequence. For instance, the phrase \textit{A gorilla visited Manilla} with window size one gives the following training samples.
 \begin{center}
@@ -671,7 +671,6 @@ The metrics used to evaluate the models are accuracy, recall, precision and F1-s
      \multirow{2}{*}{Actual values} & 0 & \multicolumn{1}{|c|}{True Negatives (TN)} &  \multicolumn{1}{c|}{False Negatives (FN)} \\
      %\cline{2-4}
       & 1 & \multicolumn{1}{|c|}{False Positives (FP)} & \multicolumn{1}{c|}{True Positives (TP)} \\ 
-     
 \end{tabular}
 \caption{Confusion matrix for binary classification.}
 \label{fig:confmat}

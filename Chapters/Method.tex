@@ -83,12 +83,12 @@ The daily percentage change is calculated to get stationary time series with mea
     \label{fig:pct_ts}
 \end{figure}
 
-To calculate ARMA-predictions, a model is fitted to the available information at time $t$. A prediction is then made for time $t+1$. Since the financial news headlines are the limiting dataset in terms of dates, earlier data can be used for the time series forecasting. The time series are included from 2006-09-01 in order to make a proper prediction for when the news dataset is available at 2006-10-20. 
+To calculate ARMA-predictions, a model is fitted to the available information at time $t$. A prediction is then made for time $t+1$. Since the financial news headlines are the limiting dataset in terms of dates, earlier data can be used for the time series forecasting. The time series are included from 2006-09-01 in order to make a proper prediction for the first sample in the news dataset at 2006-10-20. 
 
 After constructing models and forecasting the time series, the forecasts are compared to the actual percentage changes. This is used to create labels for the classification task. If the ARMA-prediction is higher than the actual outcome, the label is 0. Otherwise, it is 1. 
 The binary accuracy -- the accuracy of the index going up or down -- of the ARMA-predictions can also be used as a baseline for comparison with other models. 
 
-The python package \emph{statsmodels} are used to fit ARMA-models and make predictions. 
+The python package \emph{statsmodels} are used to fit ARMA-models and make predictions. Traditional time series analysis is not the main concern of this project. Therefore, the parameter estimation is rather crude. The AIC is calculated for a few different values of $p$ and $q$, which suggests an ARMA(1,1)-process is adequate. 
 
 \section{Text Vectorization}
 Some text vectorization techniques are jointly trained with the classification model, and thus not possible to isolate from the model. Others can be trained both jointly and used as a pre-processing layer for another model. This project uses three vectorization techniques. In all of the techniques except for Sentence-BERT, the news titles for one day are concatenated in one document representing the news of this day. 
