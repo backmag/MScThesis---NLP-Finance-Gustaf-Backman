@@ -183,7 +183,7 @@ For a term $t$ with frequency $f$ in sequence $i$ and frequency $F$ in the whole
     f_d &= \log{\frac{N}{n_t}}
 \end{align*}
 
-Where $L_i$ is the length of the sentence $i$, $N$ is the number of sequences in the document and $n_t$ is the number of documents in which the term $t$ occurs at least once \citep{manning2008introduction}. \marginpar{This technique is applied for summarization, but not in many other cases}
+Where $L_i$ is the length of the sentence $i$, $N$ is the number of sequences in the document and $n_t$ is the number of documents in which the term $t$ occurs at least once \citep{manning2008introduction}.
 
 While this remedies some of the shortcomings of BOW, there are still some aspects where it falls short: 
 \begin{enumerate}
@@ -683,5 +683,5 @@ The metrics used to evaluate the models are accuracy, recall, precision and F1-s
     \item[F1-score:] A measure which combines precision and recall as the harmonic mean of the two. Calculated as $\displaystyle{F1 = 2 \frac{R \cdot P}{R + P}}$. An F1-score of 1 implies perfect recall and precision.
 \end{description}
 
-The precision, recall and F1-score are metrics which are calculated for every class in a classification problem. In order to get a single metric for a set of samples, these can be weighted by the number of true labels of each class. Hence for a binary classification problem, $F1_w = F1_0 \cdot w_0 + F1_1 \cdot w_1$, where $w_i$ is the ratio of labels in class $i$ in the training set \citep{Ting2017}. 
+The precision, recall and F1-score are metrics which are calculated for every class in a classification problem. In order to get a single metric for a set of samples, these can be weighted by the number of true labels of each class. Hence for a binary classification problem, $F1_w = F1_0 \cdot w_0 + F1_1 \cdot w_1$, where $w_i$ is the ratio of labels in class $i$ in the training set \citep{Ting2017}. A more interesting metric for a skewed data set is the macro F1-score, which averages the F1-score for each label regardless of the ratio of labels. Consider a dataset with 99\% of label \emph{A} and 1\% label \emph{B}. If a classifier predicts \emph{A} for all targets, the weighted F1-score would be $\displaystyle{F1_w = 1 \cdot \frac{99}{100} + 0 \cdot \frac{1}{100} = \frac{99}{100}}$. The macro F1-score would simply take the average over both F1-scores, i.e. $F1_m = 0.5$. This is arguably a more reasonable measure for a skewed set of labels. 
 

@@ -57,21 +57,43 @@ The purpose of this task was to evaluate if there is information in financial ne
     \item[Limited time series model.] The fitted ARMA(1,1)-model is rather simple and seldom used in practice for financial forecasting. Evaluating financial news in conjunction with a more sophisticated model with dependency structure between assets would be more realistic. 
 \end{description}
 
+However, several models did perform above the random baseline both in terms of F1-score and accuracy. 
+
 
 
 \section{Data Evaluation}\label{sec:disc_data}
 This section discusses the used data sets and implications for how the results can be interpreted. 
 
-\subsection{News Data}
-\textcolor{red}{Extraordinär tidsperiod}
+\subsection{News Data}\label{sec:news_disc}
+
+The news data was the limiting factor in terms of size. Even though the number of articles was rather large ($\sim$114,000), it was restricted by the fact that it only covered roughly 1,800 days.
+
+Another uncertainty about the news data set is the way the headlines were collected. Some days have more news than others and it is unclear what criteria was used to gather the collection. Also, predictions on a daily basis are problematic in terms of size since one year only has 365 days. In order to get a substantial data set, one has to collect data quite a lot of years back. Chances are that the way news are written and the frequency with which they arrive are different now compared to 20 years ago. This implies the data samples are not identically distributed, which is problematic for generalization. Still, it is possible that general patterns occur, which is consistent over time. 
+
+Finally, the time which the news are gathered from (2006-10-20 to 2013-11-19) was a quite turbulent time for the global economy. The global financial crisis took place 2007-2008 and is likely not representable for the relation between news and financial indices in general. 
 
 \subsection{Financial Data}
-\textcolor{red}{Ev oklara tidsserier? Vore intressant med kanske enskild aktie osv }
+
+Collecting financial data was a lot easier than collecting news data. The quality of the data is generally better and it is easily available for long time spans. 
+
+It would also be interesting to include a more specific time series for an asset or a stock. Using the price of oil or gold, as well as the stocks of large companies such as Google, Exxon or Apple could make for interesting results and discussion. 
 
 \section{Conclusions}
 
-While it is difficult to make general and certain conclusions given the small size of the data set, the results are certainly intriguing. My findings confirm that news titles does have some predictive power on the S\&P 500 index, as well as on the validity of ARMA-models fitted to both treasury rates and S\&P 500. The performance is however most noticeable for S\&P 500. 
+While it is difficult to make general and certain conclusions given the small size of the data set, the results are certainly intriguing. My findings confirm that news titles do have some predictive power on the S\&P 500 index, as well as on the validity of ARMA-models fitted to both treasury rates and S\&P 500. The performance is however most noticeable for S\&P 500. 
 
-\section{Further Improvement}
+Another main take away is that the method for feature extraction seems highly problem dependent. The BERT model performed the best on the IMDb data, whereas it performed poorly on all other tasks. However, SBERT produced good results for the financial tasks. BERT and SBERT are largely similar, but obviously had big differences in performance. My conclusion from this is that for an unknown problem, it is not always best with a large, computationally heavy model. In fact, TF-IDF with logistic regression performed better than BERT with a sigmoid output node in almost all tasks, except for the benchmarking task. 
 
-JÄMFÖR MED BÄTTRE TIDSSERIEMODELL 
+
+
+\section{Future Work}
+
+A few notes on what aspects of this project that would be interesting to look into further. A lot of the uncertainty in this work comes down to the small data set, and the quality of the data. This is a natural starting point for further investigation. Some aspects which have repeatedly come to mind during the work with this report are listed below. 
+
+\begin{description}
+    \item[More data.] This is one of the largest obstacles I experienced in this project -- the lack of data. Using more data would allow for better understanding of how the model generalizes. The models might also overfit less and thus capture more true complex patterns in the training data. 
+    \item[Better data. ] As stated in Section \ref{sec:news_disc}, there are some uncertainties about the data and how it was collected. A more structured gathering of data with a higher quality assurance would make conclusions more robust. 
+    \item[Visualizing models.] A deeper understanding of which parts in the text data that are important would be beneficial. This would give more intuition to how the model works, and could be used to validate the functionality of the model.
+    \item[Better time series model.] The ARMA(1,1)-model used in this project is rather simple. A natural extension would be to introduce a more advanced model for time series modelling and see if including news data still improves the predictions. 
+    \item[Specific application.] The task evaluated in this project was mainly chosen as indicators for if the data holds any predictive power on time series. The practical applications for the tasks are limited. It would be interesting to further investigate how this could be used in practice, and asses the validity of such an application. 
+\end{description}

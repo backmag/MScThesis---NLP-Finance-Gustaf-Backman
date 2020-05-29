@@ -21,28 +21,19 @@ A more financial motivation for the thesis is to explore how news affects the va
 
 \section{Objective}
 
-The thesis is mainly concerned with evaluating whether a traditional model for time series prediction can be improved by adding additional input in the form of financial news titles. I framed this problem as a regression model, where the response variable is a continuous price rather than a classification problem which would only predict the future direction of movement of the value. 
+The thesis is mainly concerned with evaluating whether a traditional model for time series prediction can be improved by adding additional input in the form of financial news titles.
+I framed this problem as a classification task, where the NLP-model aims to predict if a traditional time series model forecasts higher or lower than the outcome. 
 
-Initially, I covered a few different approaches on word representations as well as the basic elements of traditional time series modelling. I also describe theory concerning deep learning and machine learning in general. 
+Initially, I will explore a few different approaches on word representations as well as the basic elements of traditional time series modelling. I also describe theory concerning deep learning and machine learning in general. 
 
-I implemented the models in Python using Keras with TensorFlow. 
 
-\textcolor{red}{Something on datasets and benchmarking?}
 
 \section{Scope}
 
-The scope of the project is limited in a few ways. The analysed price data is from three financial instruments, two US treasury rates and one US stock market index. 
+The scope of the project is limited in a few ways. The analysed price data is from three financial indices, two US treasury rates and one US stock market index. 
 
 Text data is gathered from Reuters as financial headlines between October 2006 and November 2013. The content of the articles are available as well, but as suggested by \citet{ding2014using}, using only news titles gives a higher performance. 
 
-Finally, limited access regarding powerful computing resources and time implies the models are unlikely to compete with similar state-of-the-art models trained on GPU/TPU's for weeks. 
-
-
-
-
-
-
-
-
+Finally, limited access regarding powerful computing resources and time implies the models are unlikely to compete with similar state-of-the-art models trained on GPU/TPU's 
 
 

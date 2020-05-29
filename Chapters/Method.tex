@@ -1,19 +1,22 @@
 \chapter{Method}
 
-This chapter presents the data used for training and evaluating models, the models we will test and how the text is processed to be of appropriate format for the models. 
+This chapter presents the data used for training and evaluating models, the models I will test and how the text is processed to be of appropriate format for the models. 
 
-The financial indices we considered in this project are the S\&P 500 and the US treasury rate with 1 and 3 years to maturity:
+The financial indices I considered in this project are the S\&P 500 and the US treasury rate with 1 and 3 years to maturity:
 \begin{itemize}
     \item S\&P 500 (\textit{Standard \& Poor's}) is a stock market index reflecting the performance of the 500 largest companies listed on the stock exchanges in the United States.
     \item The US Treasury rate with maturity $n$ is the yield on a government zero coupon bond with the same maturity. 
 \end{itemize}
+
+All optimizations are carried out on in a Jupyter notebook environment using python 3.7.4 and TensorFlow 1.15. Python is run on a local computer with 16 GB RAM and an Intel i7-10510U CPU, 1.80 GHz. 
+\textcolor{red}{Is this relevant? }
 
 \section{Data Collection and Pre-Processing}
 
 All models are trained on two datasets -- a labeled movie review dataset from IMDb for benchmarking and an unlabeled financial news dataset from Reuters for the financial interpretation. 
 
 \subsection{IMDd Dataset - Benchmarking}
-The IMDb dataset is a commonly used benchmarking dataset for binary classification of text data. The dataset was compiled by \citet{maas-EtAl:2011:ACL-HLT2011} and contains 50,000 polarized movie reviews with 25,000 positive and negative reviews respectively. Evaluating models on this dataset can validate that the models can capture some meaningful information from text data and thus give better insight about the performance on the financial task. 
+The IMDb dataset is a commonly used benchmarking dataset for binary classification of text data. The dataset was compiled by \citet{maas-EtAl:2011:ACL-HLT2011} and contains 50,000 polarized movie reviews with 25,000 positive and negative reviews respectively. Evaluating models on this dataset can validate that the models can capture some meaningful information from text data and thus give better insight about the performance on the financial task. It also  generally confirms that the model is implemented appropriately. For comparison, \citeauthor{xie2019unsupervised} achieved 95.8\% accuracy using BERT large and unsupervised data augmentation on the IMDb dataset. This is in the state of the art-region, even though there are models that have scored slightly higher. 
 
 Two reviews are presented below, first a positive one and then a negative one. 
 
@@ -128,6 +131,8 @@ The tokenization for the BERT model is more complex than previously described mo
 The maximum sequence length for BERT is 512, which implies 65 \% of the daily news headlines can not be fully represented. The first 512 tokens of these daily headlines are used in these cases. Shorter sequences are padded with zeros.  
 
 \section{Models}
+
+This section explains which models are used in the experiments and how they are implemented.  Firstly, general feed forward-style models are described, followed by recurrent models, and lastly the transformer model BERT.  
 
 \subsubsection{Random Classifier}
 
