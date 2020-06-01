@@ -70,13 +70,13 @@ The estimated innovation variance $\hat{\sigma^2}$ is simply the sample variance
     \hat{\sigma^2} =\frac{1}{n-p} \sum_{t=p+1}^n e_t^2 = \frac{L(\hat{\mathbf{A}})}{n-p}
 \end{align}
 
-The method above yields an estimate for an AR(p)-process. The order $p$ of the process still has to be determined using appropriate goodness-of-fit criteria such as Akaike Information Criterion \citep{lindgren2014stationary}. 
+The method above yields an estimate for an AR(p)-process. The order $p$ of the process still has to be determined using appropriate goodness-of-fit criteria such as Akaike information criterion \citep{lindgren2014stationary}. 
 
 
 
 \subsection{Moving Average (MA) Model}
 
-Another popular time series model is the moving average (MA) model. This model is similarly to the AR-model defined by its generating polynomial, here called $C(z)$. 
+Another popular time series model is the moving average (MA) model. This model is defined similarly to the AR-model by its generating polynomial, here called $C(z)$. 
 
 \begin{align}
     C(z) = c_0 + c_1 z + \cdots + c_q z^q 
@@ -127,9 +127,9 @@ The first processing needed is to divide the sentence into smaller units -- \emp
 ['A', 'gorilla', 'visited', 'Manilla', '.']
 \end{verbatim}
 
-Some of these tokens carry information about the beginning or end of the sentence, which is obviously important. However, not all capital letters imply the start of a sequence and not all punctuation indicates the end of a sequence, e.g. \textit{Hello Mr. Gorilla!}. There are quite a few special cases of this sort, and there are convenient functions in python that deal with the problems of tokenization, such as \textit{Tokenizer} from Keras \citep{chollet2020keras}. The tokenizer from Keras splits the text into sequences, removes the punctuation and transforms all characters to lower case by default. 
+Some of these tokens carry information about the beginning or end of the sentence, which is obviously important. However, not all capital letters imply the start of a sequence and not all punctuation indicates the end of a sequence, e.g. \textit{Hello Mr. Gorilla!}. There are quite a few special cases of this sort, and there are convenient functions in Python that deal with the problems of tokenization, such as \textit{Tokenizer} from Keras \citep{chollet2020keras}. The tokenizer from Keras splits the text into sequences, removes the punctuation and transforms all characters to lower case by default. 
 
-When the sentence is tokenized, it is also common to remove the most frequent words, since these probably doesn't give a lot of information about the difference between sentences. These are called \textit{stop words} and typically include common words such as \textit{a, the, but} etc.
+When the sentence is tokenized, it is also common to remove the most frequent words, since these probably don't give a lot of information about the difference between sentences. These are called \textit{stop words} and typically include common words such as \textit{a, the, but}, etc.
 
 After the tokenization, each unique word is given an index. 
 \begin{center}
@@ -195,9 +195,9 @@ While this remedies some of the shortcomings of BOW, there are still some aspect
 All of the problems above are addressed by the concept of word embeddings in the next section. 
 
 \subsection{Word Embeddings}
-As opposed to the sparse representation of one-hot encoding, \textit{word embeddings} are dense, continuous vector representations of words. The dimension of a one-hot encoded vector is corresponds to the size of the vocabulary (generally 20,000 or greater), whereas word embedding vectors typically have 100 to 1000 dimensions \citep{chollet2017deep}.
+As opposed to the sparse representation of one-hot encoding, \textit{word embeddings} are dense, continuous vector representations of words. The dimension of a one-hot encoded vector corresponds to the size of the vocabulary (generally 20,000 or greater), whereas word embedding vectors typically have 100 to 1000 dimensions \citep{chollet2017deep}.
 
-A major breakthrough on the topic of word embeddings was made by \citet{mikolov2013efficient} where efficient methods of training a model were introduced, popularised as the \textit{word2vec} model. \textit{continuous bag-of-words} and \textit{continuous skip-gram} are two model architectures for training the $d$-dimensional vector representations of words. Both methods share the notion that the meaning of a word is determined by the words it is commonly used together with. The representations are learned by constructing a language modeling task which is solved by a neural network. The task is generally to predict neighboring words of a given word. The weights into the hidden layer of the trained neural network are the embeddings for a word. 
+A major breakthrough on the topic of word embeddings was made by \citet{mikolov2013efficient}, where efficient methods of training a model were introduced, popularised as the \textit{word2vec} model. \textit{Continuous bag-of-words} and \textit{continuous skip-gram} are two model architectures for training the $d$-dimensional vector representations of words. Both methods share the notion that the meaning of a word is determined by the words it is commonly used together with. The representations are learned by constructing a language modeling task which is solved by a neural network. The task is generally to predict neighboring words of a given word. The weights into the hidden layer of the trained neural network are the embeddings for a word. 
 
 \textit{Continuous bag-of-words} are trained by predicting the missing word in a sequence of words of a given window size. The order of the words is not taken into consideration other than for deciding which words to include in one sequence. For instance, the phrase \textit{A gorilla visited Manilla} with window size one gives the following training samples.
 \begin{center}
@@ -214,12 +214,11 @@ Again, note that the order of the words above is not taken into account.
 \textit{gorilla visited Manilla} $\implies (x,y) = $ \textit{(visited, gorilla), (visited, Manilla)}
 \end{center}
 
-The known words above are \textit{gorilla} and \textit{visited} respectively. 
+The known words above are \textit{gorilla} and \textit{visited} respectively.\marginpar{I am not sure I understood well you examples. They do not seem to be correct. You obliterate one word and you predict the left and right context gorilla --> (a, visited)} 
 
 According to the authors\footnote{See for instance: \url{https://code.google.com/archive/p/word2vec/}}, the continuous bag-of-words model is faster for training but the continuous skip-gram model is better for infrequent words. 
 
-
-The word embeddings generated by these methods does carry some information about the semantic relationship of words. As mentioned in the previous section, a desirable function of word representation is to determine whether a word is close to another word in a semantic meaning. This is elegantly represented in word embeddings as the cosine similarity between word vectors. Consider for instance the word \textit{Sweden}. The closest word vectors in the word2vec-vocabulary with respect to cosine similarity are displayed in Table~\ref{tab:cossim}.
+The word embeddings generated by these methods do carry some information about the semantic relationship of words. As mentioned in the previous section, a desirable function of word representation is to determine whether a word is close to another word in a semantic meaning. This is elegantly represented in word embeddings as the cosine similarity between word vectors. Consider for instance the word \textit{Sweden}. The closest word vectors in the word2vec-vocabulary with respect to cosine similarity are displayed in Table~\ref{tab:cossim}.
 
 \begin{table}[h!]
     \centering
@@ -281,7 +280,7 @@ The core part of the multilayer perceptron is the single perceptron unit display
 
 The training of the model will select the weight and biases such that the predictions are as accurate as possible. The bias term $b$ is usually included in the term \textit{weights} for convenience, since it can be seen as a weight for the input value $x_0 = 1$. 
 
-The accuracy of classification is measured by some loss function $J$, which depends on the training samples $(x,y)$ and the weights $w$.  A common loss function for binary classifcation is the binary crossentropy, defined in Eq. \ref{eq:bce}, where $y$ is the true label, $\hat{y}$ is the predicted label and $p(\hat{y})$ is the predicted probability of the sample being of label 1. Conversely, $1 - p(\hat{y})$ is the probability of the sample being of label 0. 
+The performance of classification is measured by some loss function $J$, which depends on the training samples $(x,y)$ and the weights $w$.  A common loss function for binary classification is the binary crossentropy, defined in Eq. \ref{eq:bce}, where $y$ is the true label, $\hat{y}$ is the predicted label and $p(\hat{y})$ is the predicted probability of the sample being of label 1. Conversely, $1 - p(\hat{y})$ is the probability of the sample being of label 0. 
 
 \begin{align}
     L(y,\hat{y}) = -\frac{1}{N} \sum_{i=1}^N y_i \log{(p(\hat{y}_i))} + (1 - y_i) \log{(1 - p(\hat{y}_i))} \label{eq:bce}
@@ -290,7 +289,7 @@ The accuracy of classification is measured by some loss function $J$, which depe
 A single perceptron unit is not too exciting, but when combined into a network, it is more powerful. \citet{leshno1993multilayer} proved that a neural network with a locally bounded piecewise continuous activation function can approximate any continuous function to any degree of accuracy if and only if the activation function is not a polynomial. This is known as the universal approximation theorem. While this implies that a sufficiently large multi layer perceptron is able to represent any continuous function, it does not guarantee that a network is able to learn this representation. Furthermore, the size of the network is unrestricted and can in practice be infeasible computationally \citep{Goodfellow-et-al-2016}. 
 
 
-\begin{figure}[th]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.7\textwidth]{Figures/ff.PNG}
     \caption{Overview of a densely connected feed forward network with six inputs, two hidden layers and one output node.}
@@ -303,13 +302,13 @@ Combining the basic functionality in Figure~\ref{fig:perceptron} with the networ
 
 A drawback which affects all of the models presented in the previous section is that the order of words is not taken into account. Of course, the order can be considered in the pre-processing if some more complex transformation is used (e.g. Sentence-BERT), but these transformations usually utilize some recurrent or attention-based method. 
 
-\subsubsection{Recurrent Neural Networks}
+\paragraph{Recurrent Neural Networks.}
 
-A recurrent neural network (RNN) is rather similar to a multilayer perceptron, but it takes previous inputs into account. The input to an RNN is a sequence of samples. In natural language processing a sequence is typically a sentence. An RNN can however be used for other tasks where the order of samples are important, e.g. time series forecasting.
+A recurrent neural network (RNN) is rather similar to a multilayer perceptron, but it takes previous inputs into account. The input to an RNN is a sequence of samples. In natural language processing, a sequence is typically a sentence. An RNN can however be used for other tasks where the order of samples are important, e.g. time series forecasting.
 
 Obviously, a sentence can not be defined just by the word it contains, one must also take the order of the words in the sentence into account. We keep a general idea of the meaning of what we have previously read and adjust the idea depending on the new words in the sentence. Recurrent neural networks work in a rather similar way, storing hidden representations of inputs and conveying that information to the next input in the sequence \citep{Goodfellow-et-al-2016}. 
 
-\begin{figure}[H]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/figs-simplernn.pdf}
     \caption{General graph of a sequence-to-sequence RNN unfolded through time, where a sequence of inputs $x$ predicts a sequence of outputs $y$. $\mathbf{U}$, $\mathbf{V}$ and $\mathbf{W}$ are weights that are shared throughout the sequence, independent of the position.}
@@ -331,20 +330,19 @@ The model structure is similar for sequence-to-one classifications, i.e. a seque
 predicts one label $\hat{y}_i$. Given a sequence length $l$, only the final step $x_i^{(l)}$ provides an output $y_i$. This output is however influenced by the previous inputs $x_i^{(t)}$ through the hidden layers $h^{(t)}$ and the weights $W$, see Figure~\ref{fig:rnns2o}. 
 
 
-\begin{figure}[H]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/figs-rnn-s2o.pdf}
     \caption{Schematic graph of a sequence-to-one RNN unfolded through time, where a sequence of inputs $(x^{(1)}, ..., x^{(l)})$ predicts one output $y$.}
     \label{fig:rnns2o}
 \end{figure}
 
-\subsubsection{Long Short-Term Memory (LSTM)}
-
+\paragraph{Long Short-Term Memory (LSTM).}
 Even though the general idea of the previously described method is widely used, the model is not used precisely as described. The simple RNN-structure suffers from the \textit{vanishing gradient problem}. To understand this problem, one must understand how the network is trained, which is outside the scope of this report. In short, long term dependencies are too many time-steps away to have an impact when the network is trained. 
 
 In practice, either Long-Short-Term Memory (LSTM) or Gated Recurrent Unit (GRU) are used instead. The main difference is that information that is deemed important is allowed to pass on to later time-steps without too much interference from hidden several dot products and activation functions. This alleviates the vanishing gradient problem, even though the core idea is the same as the previously described simple RNN \citep{chollet2017deep}.
 
-\subsubsection{Bidirectional LSTM}
+\paragraph{Bidirectional LSTM.}
 As a final note for the recurrent neural network approach, it should be mentioned that when RNNs are used in natural language processing, they are often wrapped with a bidirectional layer. This simply reverts the input sequence and enters the sequence in both the original and the reverse direction to two separate RNNs, usually LSTM or GRU. 
 
 The usefulness of this is particularly intuitive when looking at the network in Figure~\ref{fig:rnn}. When processing the entry $x^{(j)}$, only the entries $t < j$ are known. However, tokens later in the sequence might have an impact on the previous outputs of the model. Bidirectional LSTMs can catch patterns that are overlooked by regular LSTMs.
@@ -456,18 +454,18 @@ Finally, the contribution to the attention for each word is calculated by adding
     h_i^{o+1} = \sum\limits_{\forall j} v_j \cdot  \text{softscore}_{i,j} 
 \end{align}
 
-A flow graph over how this is calculated is shown in Figure~\ref{fig:attflow}. 
+ Figure~\ref{fig:attflow} shows a flow graph over how this is calculated. 
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.4\textwidth]{Figures/figs-self-att.pdf}
-    \caption{Calculation of self-attention from hidden layer $o$ to $o+1$ for word $i$. ``mul'' implies matrix multiplication or dot product. }
+    \caption{Calculation of self-attention from hidden layer $o$ to $o+1$ for word $i$. \texttt{mul} denotes a matrix multiplication or a dot product.}
     \label{fig:attflow}
 \end{figure}
 
-The details of the calculation until now has concerned one word at the time in the sentence. It can however be neatly compressed into matrix form.
+The details of the calculation until now have concerned one word at the time in the sentence. It can however be neatly compressed into matrix form.
 
-Letting $h^o$ be as defined in Eq. \ref{eq:attinp}, we can  write the query, key and value vectors as matrices where every row corresponds to the vector for a word in the sentence. 
+Letting $h^o$ be as defined in Eq. \ref{eq:attinp}, we can  write the query, key, and value vectors as matrices where every row corresponds to the vector for a word in the sentence. 
 
 \begin{align}
     Q = h^o W^Q \\
@@ -549,7 +547,7 @@ While a lot of the BERT model structure is similar to the encoder part of the tr
     \end{quote}
     Where obviously the first pair is reasonable and the second is not.
 \end{description}
-\citeauthor{devlin2018bert} pre-trained the model on two large corpora, the BooksCorpus (800M words) and the English Wikipedia (2.500M words). 
+\citeauthor{devlin2018bert} pre-trained the model on two large corpora, the BooksCorpus (800M words) and the English Wikipedia (2,500M words). 
 
 After the pre-training, the model is fine-tuned for the task at hand. This implies updating the weights in one or several of the upper transformer layers. One of the major benefits of BERT is that it can be used for most NLP tasks with great performance even compared to more task specific models. The inputs and outputs just have to be changed accordingly. 
 
@@ -571,11 +569,11 @@ SBERT allows for three different pooling operations -- using the \textsc{[CLS]}-
 
 This section concerns the problem of overfitting in a machine learning context. The contents in Sections \ref{sec:trainvaltest} through \ref{sec:crossval} mainly follow \citeauthor{Goodfellow-et-al-2016} but is covered thoroughly and in a similar fashion in most basic machine learning summaries. 
 
-\subsection{Train, Validation and Test Set}\label{sec:trainvaltest}
+\subsection{Train, Validation, and Test Set}\label{sec:trainvaltest}
 
 The main goal of machine learning is to be able to have some predictive power on previously unseen data. This is a difference between machine learning optimization and optimization in general. A model is said to \emph{generalize} well if it shows good performance on data it has not seen before. This is also how a model is typically used for some application -- we want to use the model to predict things of uncertainty. 
 
-Suppose we have gathered a dataset $\mathcal{D}$ to train a model. In order to approximate how the model performs on unseen data we can hide a partition of the dataset during training. Letting our initial dataset $\mathcal{D}$ be the set $\{\mathcal{D}_{train}, \mathcal{D}_{test}\}$, we optimize the model on the data $\mathcal{D}_{train}$ by minimizing some loss function $\mathcal{L}$ over the samples in $\mathcal{D}_{train}$. The generalization error of the trained model is then approximated by $\mathcal{L}(\mathcal{D}_{test})$.
+Suppose we have gathered a dataset $\mathcal{D}$ to train a model. In order to approximate how the model performs on unseen data, we can hide a partition of the dataset during training. Letting our initial dataset $\mathcal{D}$ be the set $\{\mathcal{D}_{train}, \mathcal{D}_{test}\}$, we optimize the model on the data $\mathcal{D}_{train}$ by minimizing some loss function $\mathcal{L}$ over the samples in $\mathcal{D}_{train}$. The generalization error of the trained model is then approximated by $\mathcal{L}(\mathcal{D}_{test})$.
 
 The training of a machine learning model can be simply expressed as minimizing these two objectives:
 \begin{enumerate}
@@ -600,16 +598,16 @@ Other parameters rather adjust the speed and precision of training. The learning
 
 \subsection{Regularization}\label{sec:regul}
 
-Regularization is a way to prioritize more likely parameters over less likely parameters. It assumes we have some prior belief of which parameters that are more likely. The basic principle is the same as for Occham's razor -- if two solutions to a problem give equal results, choose the simplest solution.
+Regularization is a way to prioritize more likely parameters over less likely parameters. It assumes we have some prior belief of which parameters that are more likely. The basic principle is the same as for Occam's razor -- if two solutions to a problem give equal results, choose the simplest one.
 
-This concept is used to combat overfitting and to make the model focus on the most important patterns in the data. A model with high regularization is penalised for making complex decision rules, generally giving a higher training error. A simple way to introduce regularization is to add a \emph{weight decay} to the loss function. Given the weights $w$ in a neural network and some cost function $\mathcal{L}$, a new cost function $\mathcal{L}_R$ with weight decay can be constructed as in \ref{eq:weightdecay}.
+This concept is used to combat overfitting and to make the model focus on the most important patterns in the data. A model with high regularization is penalised for making complex decision rules, generally giving a higher training error. A simple way to introduce regularization is to add a \emph{weight decay} to the loss function. Given the weights $w$ in a neural network and some cost function $\mathcal{L}$, a new cost function $\mathcal{L}_R$ with weight decay can be constructed as in Eq. \ref{eq:weightdecay}.
 
 \begin{align}
     \mathcal{L}_R (w) = \mathcal{L}(w) + \lambda w^T w
     \label{eq:weightdecay}
 \end{align}
 
-The parameter $\lambda$ is here a hyperparameter used to control the regularization strength. A high $\lambda$ implies more regularization. 
+The parameter $\lambda$ is here a hyperparameter used to control the regularization strength. A higher $\lambda$ implies more regularization. 
 
 \citeauthor{hinton2012improving} presented another regularization method used in the context of neural networks in \citeyear{hinton2012improving} --  \emph{dropout} regularization. This removes a node in the network with probability $p$ during every step in the optimization. It is arguably quite similar to training several different networks, since the network is constantly changing and removing nodes, altering its structure. Dropout can be seen as a cheap way of training and evaluating an ensemble of exponentially many neural networks. 
 
@@ -629,15 +627,15 @@ If the available dataset is small, it might be unrealistic to have the same stat
 
 Firstly, an independent test set is extracted from the dataset. The test set should have the same distribution of labels as the dataset. This is seen as the orange square in Figure \ref{fig:kfold}. The test set is typically 10-20 \% of the dataset, it does however depend on how large the dataset is.
 
-The remaining samples in the dataset is then divided randomly into $k$ parts of equal size. A validation error with lower variance can then be calculated by taking the mean over all $k$ validation errors after fitting the model to the $k$ different training sets. This validation error can then be used to determine which set of hyperparameters gives the best performance. 
+The remaining samples in the dataset are then divided randomly into $k$ parts of equal size. A validation error with lower variance can then be calculated by taking the mean over all $k$ validation errors after fitting the model to the $k$ different training sets. This validation error can then be used to determine which set of hyperparameters gives the best performance. 
 
 Finally, the performance of the model on unseen data is estimated on the test set with the hyperparameters found in the $k$-fold cross validation. If a more accurate test error is desired, an additional loop over $k$ test sets can be performed in a similar fashion as for the validation set. This is however not used for hyperparameter selection, only to get a better estimate of the generalization performance \citep{Goodfellow-et-al-2016}. 
 
 \subsection{Grid Search \& Random Search}
 
-Using the $k$-fold cross validation technique previously presented can be computationally expensive if a large set of hyperparameters are to be tested. Suppose we want to try the following number of hyperparameters.
+Using the $k$-fold cross validation technique previously presented can be computationally expensive if a large set of hyperparameters are to be tested. Suppose we want to try the  number of hyperparameters in Table \ref{tab:hyper}\marginpar{Then what?}.
 
-\begin{table}[H]
+\begin{table}[t]
     \centering
     \begin{tabular}{lr}
     \hline
@@ -653,6 +651,8 @@ Using the $k$-fold cross validation technique previously presented can be comput
          \hline \hline 
          \textbf{Total \# combinations } & \textbf{6750}
     \end{tabular}
+    \caption{}
+    \label{tab:hyper}
 \end{table}
 
 Furthermore, using $k$-fold cross validation with $k=10$ would imply 67,500 fitted models in order to find the best set of hyperparameters. This might obviously be reasonable for smaller sets, but it rather quickly grows infeasible to do an exhaustive search over all possible combinations. 
@@ -660,9 +660,9 @@ Furthermore, using $k$-fold cross validation with $k=10$ would imply 67,500 fitt
 A common and effective alternative is to use a random search. Only the possible distributions of the hyperparameters are defined, and a fixed number of combinations of these are evaluated. Random search finds good solutions quicker than grid search, as it reduces the validation error more for a given number of tested hyperparameters \citep{Goodfellow-et-al-2016}. 
 
 \section{Performance Metrics}
-The metrics used to evaluate the models are accuracy, recall, precision and F1-score. While these metrics are all somewhat related, they give different insights of performance. For convenience a binary confusion matrix is displayed in Figure~\ref{fig:confmat}. 
+The metrics used to evaluate the models are accuracy, recall, precision and F1-score. While these metrics are all somewhat related, they give different insights of performance. For convenience a binary confusion matrix is displayed in Table~\ref{fig:confmat}. 
 
-\begin{figure}[ht]
+\begin{table}[ht]
 \centering
 \begin{tabular}{cccc}
      & & \multicolumn{2}{c}{Predictions} \\
@@ -674,12 +674,12 @@ The metrics used to evaluate the models are accuracy, recall, precision and F1-s
 \end{tabular}
 \caption{Confusion matrix for binary classification.}
 \label{fig:confmat}
-\end{figure}
+\end{table}
 
 \begin{description}
     \item[Accuracy:] The most intuitive measure of performance, simply the ratio of correct classifications to the total number of classifications. If the labels of a data set are symmetric, this is a good measure of performance. However, if 90 \%  of the samples are of label $a$ and 10\% of label $b$, a model which constantly predicts label $a$ gets an accuracy of 90\%. It doesn't reveal any information about which data is classified incorrectly. 
-    \item[Precision:] The number of correctly classified samples in one class divided by the total number of predictions of that class. The precision $P$ for class 0 in Figure~\ref{fig:confmat} is calculated as $\displaystyle{P = \frac{TN}{TN + FP}}$. 
-    \item[Recall:] The number of correctly classified samples in one class divided by the total number of samples in that class. In other words, a measure of how many percent of a class that was found. In relation to Figure~\ref{fig:confmat} it is calculated as $\displaystyle{R = \frac{TN}{TN + FN}}$. Recall is also referred to as \textit{sensitivity} in statistical literature. 
+    \item[Precision:] The number of correctly classified samples in one class divided by the total number of predictions of that class. The precision $P$ for class 0 in Table~\ref{fig:confmat} is calculated as $\displaystyle{P = \frac{TN}{TN + FP}}$. 
+    \item[Recall:] The number of correctly classified samples in one class divided by the total number of samples in that class. In other words, a measure of how many percent of a class that was found. In relation to Table~\ref{fig:confmat} it is calculated as $\displaystyle{R = \frac{TN}{TN + FN}}$. Recall is also referred to as \textit{sensitivity} in statistical literature. 
     \item[F1-score:] A measure which combines precision and recall as the harmonic mean of the two. Calculated as $\displaystyle{F1 = 2 \frac{R \cdot P}{R + P}}$. An F1-score of 1 implies perfect recall and precision.
 \end{description}
 

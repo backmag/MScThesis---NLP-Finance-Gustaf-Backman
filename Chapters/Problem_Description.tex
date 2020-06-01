@@ -1,36 +1,35 @@
 \chapter{Problem Description}
 
-Predicting the movement of a financial time series is generally done using traditional statistical methods based on the available historical data. There might however be information available not included in the historical data which has some predictive quality of the future development of an asset value. 
+Predicting the movement of a financial time series is generally done using traditional statistical methods based on the available historical data. There might, however, be information available not included in the historical data which has some predictive quality of the future development of an asset value. 
 
-Consider significant political or environmental events which has an effect on an asset in the long run. For instance news regarding trade relations between USA and China, the progress of Brexit, or an emerging war will indicate some long term future movement of an asset. 
+Consider significant political or environmental events, which have an effect on an asset in the long run. For instance, news regarding trade relations between USA and China, the progress of Brexit, or an emerging war will indicate some long term future movement of an asset. 
 
 In order to deal with such uncertainties, analysts today have to alter the prediction from a traditional time series model with a more manual analysis of the state of the world through news data. This is a time consuming and subjective task that perhaps could be ameliorated by natural language processing of news.
 
 \section{Background}
 
-The recent decade has seen a significant growth in the amount of published papers in the field of natural language processing related to finance \citep{xing}. The use of text processing has repeatedly proven successful in improving models for financial forecasting, however mainly within predicting the movement direction of the price of an asset in some time period, for instance in \citet{li2014news}, \citet{heston2017news} and \citet{othan}. The previous work in the field uses a diverse set of approaches, from crude methods of counting positive and negative words in articles to training deep neural networks on large corpora to produce meaningful vector representations of words \citep{arorausing}. 
+The last decade has seen a significant growth in the amount of published papers in the field of natural language processing related to finance \citep{xing}. The use of text processing has repeatedly proven successful in improving models for financial forecasting, however mainly within predicting the movement direction of the price of an asset in some time period, for instance in \citet{li2014news}, \citet{heston2017news}, and \citet{othan}. The previous work in the field uses a diverse set of approaches, from crude methods of counting positive and negative words in articles to training deep neural networks on large corpora to produce meaningful vector representations of words \citep{arorausing}. 
 
 
 \section{Motivation}
+The field of natural language processing seems to be in an interesting phase with rather recent developments such as word2vec \citep{mikolov2013efficient}, Bidirectional Encoder Representations from Transformers (BERT) \citep{devlin2018bert} and A lite BERT -- ALBERT \citep{lan2019albert}. As NLP is applicable to a wide variety of tasks, the performance and impact of these new models have yet to be explored in several areas. 
 
-Mainly, the field of natural language processing seems to be in an interesting phase with rather recent developments such as word2vec \citep{mikolov2013efficient}, Bidirectional Encoder Representations from Transformers (BERT) \citep{devlin2018bert} and A lite BERT -- ALBERT \citep{lan2019albert}. As NLP is applicable to a wide variety of tasks, the performance and impact of these new models have yet to be explored in several areas. 
+Another positive aspect is that the source code with examples of usage of these novel methods are more often than not publicly available through GitHub. Such the models might be complex and require large computational power for training. Nonetheless, there are often pre-trained parameters available which can then be used either as-is or with further tuning for the task it will be used for. 
 
-Another positive aspect is that the source code with examples of usage of these novel methods are more often than not publicly available through GitHub. Even though the models might be complex and requires large computational power for training, there are often pre-trained parameters available which can then be used either as-is or with further tuning for the task it will be used for. 
-
-A more financial motivation for the thesis is to explore how news affects the value of an asset and how this complies with the \emph{efficient market hypothesis} (EMH) as proposed by \citet{malkiel1970efficient}. The idea that the market adapts to new publicly available information instantly does not comply with the suggestion that publicly available news has any predictive power on the future value of an asset, at least not on a mid to long range timescale. Previous work by  \citet{xing} and \citet{arorausing} has suggested that the case is indeed that public text data has some predictive power, so a motivation for this thesis is to explore the reproducibility of this effect.
+An additional financial motivation for the thesis is the exploration of how news affects the value of an asset and how this complies with the \emph{efficient market hypothesis} (EMH) as proposed by \citet{malkiel1970efficient}. The idea that the market adapts to new publicly available information instantly does not comply with the suggestion that publicly available news has any predictive power on the future value of an asset, at least not on a mid to long range timescale. Previous works by  \citet{xing} and \citet{arorausing} have suggested that the case is indeed that public text data has some predictive power, so a motivation for this thesis is to explore the reproducibility of this effect.
 
 \section{Objective}
 
 The thesis is mainly concerned with evaluating whether a traditional model for time series prediction can be improved by adding additional input in the form of financial news titles.
-I framed this problem as a classification task, where the NLP-model aims to predict if a traditional time series model forecasts higher or lower than the outcome. 
+I framed this problem as a classification task, where the NLP model aims to predict if a traditional time series model forecasts higher or lower than the outcome.\marginpar{It is not clear what you mean with outcome. Is that the real value?}
 
-Initially, I will explore a few different approaches on word representations as well as the basic elements of traditional time series modelling. I also describe theory concerning deep learning and machine learning in general. 
+First, I will explore a few different approaches on word representations as well as the basic elements of traditional time series modelling. I also describe the theory concerning deep learning and machine learning in general. \marginpar{You need a third member in your paragraph: Finally...}
 
 
 
 \section{Scope}
 
-The scope of the project is limited in a few ways. The analysed price data is from three financial indices, two US treasury rates and one US stock market index. 
+The scope of the project is limited in a few ways. I analysed price data from three financial indices, two US treasury rates and one US stock market index. 
 
 Text data is gathered from Reuters as financial headlines between October 2006 and November 2013. The content of the articles are available as well, but as suggested by \citet{ding2014using}, using only news titles gives a higher performance. 
 

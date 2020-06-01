@@ -2,7 +2,7 @@
 
 This chapter discusses the findings in Chapter \ref{chap:results} and arguments for potential implications of the results. 
 
-Firstly, an evaluation of the models in the IMDb-task is briefly made. This is followed by evaluations of the models in relation to the financial tasks in Sections \ref{sec:eval_index} and \ref{sec:eval_arma}. A section on the used data follows. The chapter is ended with some general conclusions and recommendations for further research. 
+Firstly, an evaluation of the models in the IMDb task is briefly made. This is followed by evaluations of the models in relation to the financial tasks in Sections \ref{sec:eval_index} and \ref{sec:eval_arma}. A section on the used data follows. The chapter is ended with some general conclusions and recommendations for further research.\marginpar{Please try to use the active voice}
 
 \section{Evaluation of IMDb performance}
 
@@ -20,7 +20,7 @@ This section discusses the results presented in Tables \ref{tab:rescdp} and \ref
 
 \subsection{Model Evaluation}
 
-No model applied to the 1 year and 3 year rates gave any significant performance improvement over the random baselines. Reflections about the difference between time series is further elaborated in Section \ref{sec:disc_data}. 
+No model applied to the one year and three year rates gave any significant performance improvement over the random baselines. Reflections about the difference between time series is further elaborated in Section \ref{sec:disc_data}. 
 
 Several models did however show a predictive ability on the S\&P 500 index, both for current day prediction and next day prediction. The simplest of the feature extraction techniques -- TF-IDF -- provided several results in the top segment for both tasks. Random forest and logistic regression performed well for both tasks, while SVM was less successful.
 
@@ -44,9 +44,9 @@ This section discusses the results presented in Tables \ref{tab:res_arma_cdp} an
 
 \subsection{Model Evaluation}
 
-Similarly to the index direction task, the models reached the highest performance over the random baseline for the S\&P 500 index. The model results are however less ambiguous for the ARMA direction task than for the index direction task. SBERT is the feature extraction method that gives the best performance. When paired with logistic regression, it seems to give decent results for all tasks and series. The confusion matrices in Figures \ref{tab:confmat_arma_cdp} and \ref{tab:confmat_arma_ndp} also shows that the model seem to make reasonable predictions, compared to TF-IDF + MLP for S\&P 500 shown in Table \ref{tab:confmat_cdp} which just predicts the most frequent label.
+Similarly to the index direction task, the models reached the highest performance over the random baseline for the S\&P 500 index. The model results are however less ambiguous for the ARMA direction task than for the index direction task. SBERT is the feature extraction method that gives the best performance. When paired with logistic regression, it seems to give decent results for all tasks and series. The confusion matrices in Figures \ref{tab:confmat_arma_cdp} and \ref{tab:confmat_arma_ndp} also show that the model seems to make reasonable predictions, compared to TF-IDF + MLP for S\&P 500 shown in Table \ref{tab:confmat_cdp} which just predicts the most frequent label.
 
-The accuracy of 64.1 \% seen in Table \ref{tab:res_arma_ndp} for SBERT + logistic regression is quite uncertain due to the small data set. This does however suggest that the news titles have some predictive power on the validity of the ARMA-prediction. A use case for this could be as a warning system for when a more sophisticated time series model seems to make a suspicious prediction. The NLP-model can issue a warning when some probability threshold $\alpha$ is exceeded. For instance, using SBERT as feature extractor and logistic regression with a threshold value of $\alpha = 0.8$, an accuracy of 74 \% is achieved. This implies the model only makes predictions if its more than 80 \% certain. Given more data, this could possibly be a usable tool. 
+The accuracy of 64.1 \% seen in Table \ref{tab:res_arma_ndp} for SBERT + logistic regression is quite uncertain due to the small data set. This does however suggest that the news titles have some predictive power on the validity of the ARMA-prediction. A use case for this could be as a warning system for when a more sophisticated time series model seems to make a suspicious prediction. The NLP model can issue a warning when some probability threshold $\alpha$ is exceeded. For instance, using SBERT as feature extractor and logistic regression with a threshold value of $\alpha = 0.8$, an accuracy of 74 \% is achieved. This implies the model only makes predictions if its more than 80 \% certain. Given more data, this could possibly be a usable tool. 
 
 \subsection{Task Evaluation}
 
@@ -68,9 +68,9 @@ This section discusses the used data sets and implications for how the results c
 
 The news data was the limiting factor in terms of size. Even though the number of articles was rather large ($\sim$114,000), it was restricted by the fact that it only covered roughly 1,800 days.
 
-Another uncertainty about the news data set is the way the headlines were collected. Some days have more news than others and it is unclear what criteria was used to gather the collection. Also, predictions on a daily basis are problematic in terms of size since one year only has 365 days. In order to get a substantial data set, one has to collect data quite a lot of years back. Chances are that the way news are written and the frequency with which they arrive are different now compared to 20 years ago. This implies the data samples are not identically distributed, which is problematic for generalization. Still, it is possible that general patterns occur, which is consistent over time. 
+Another uncertainty about the news data set is the way the headlines were collected. Some days have more news than others and it is unclear which criteria were used to gather the collection. Also, predictions on a daily basis are problematic in terms of size since one year only has 365 days. In order to get a substantial data set, one has to collect data quite a lot of years back. Chances are that the way news are written and the frequency with which they arrive are different now compared to 20 years ago. This implies the data samples are not identically distributed, which is problematic for generalization. Still, it is possible that general patterns occur, which is consistent over time. 
 
-Finally, the time which the news are gathered from (2006-10-20 to 2013-11-19) was a quite turbulent time for the global economy. The global financial crisis took place 2007-2008 and is likely not representable for the relation between news and financial indices in general. 
+Finally, the time which the news are gathered, from 2006-10-20 to 2013-11-19, was a quite turbulent time for the global economy. The global financial crisis took place 2007-2008 and is likely not representable for the relation between news and financial indices in general. 
 
 \subsection{Financial Data}
 
@@ -82,7 +82,7 @@ It would also be interesting to include a more specific time series for an asset
 
 While it is difficult to make general and certain conclusions given the small size of the data set, the results are certainly intriguing. My findings confirm that news titles do have some predictive power on the S\&P 500 index, as well as on the validity of ARMA-models fitted to both treasury rates and S\&P 500. The performance is however most noticeable for S\&P 500. 
 
-Another main take away is that the method for feature extraction seems highly problem dependent. The BERT model performed the best on the IMDb data, whereas it performed poorly on all other tasks. However, SBERT produced good results for the financial tasks. BERT and SBERT are largely similar, but obviously had big differences in performance. My conclusion from this is that for an unknown problem, it is not always best with a large, computationally heavy model. In fact, TF-IDF with logistic regression performed better than BERT with a sigmoid output node in almost all tasks, except for the benchmarking task. 
+Another main takeaway is that the method for feature extraction seems highly problem-dependent. The BERT model performed the best on the IMDb data, whereas it performed poorly on all other tasks. However, SBERT produced good results for the financial tasks. BERT and SBERT are largely similar, but obviously had big differences in performance. My conclusion from this is that for an unknown problem, it is not always best with a large, computationally heavy model. In fact, TF-IDF with logistic regression performed better than BERT with a sigmoid output node in almost all tasks, except for the benchmarking task. 
 
 
 
@@ -94,6 +94,6 @@ A few notes on what aspects of this project that would be interesting to look in
     \item[More data.] This is one of the largest obstacles I experienced in this project -- the lack of data. Using more data would allow for better understanding of how the model generalizes. The models might also overfit less and thus capture more true complex patterns in the training data. 
     \item[Better data. ] As stated in Section \ref{sec:news_disc}, there are some uncertainties about the data and how it was collected. A more structured gathering of data with a higher quality assurance would make conclusions more robust. 
     \item[Visualizing models.] A deeper understanding of which parts in the text data that are important would be beneficial. This would give more intuition to how the model works, and could be used to validate the functionality of the model.
-    \item[Better time series model.] The ARMA(1,1)-model used in this project is rather simple. A natural extension would be to introduce a more advanced model for time series modelling and see if including news data still improves the predictions. 
-    \item[Specific application.] The task evaluated in this project was mainly chosen as indicators for if the data holds any predictive power on time series. The practical applications for the tasks are limited. It would be interesting to further investigate how this could be used in practice, and asses the validity of such an application. 
+    \item[Better time series model.] The ARMA(1,1) model used in this project is rather simple. A natural extension would be to introduce a more advanced model for time series modelling and see if including news data still improves the predictions. 
+    \item[Specific application.] The task evaluated in this project was mainly chosen as indicators for if the data holds any predictive power on time series. The practical applications for the tasks are limited. It would be interesting to further investigate how this could be used in practice, and assess the validity of such an application. 
 \end{description}

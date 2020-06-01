@@ -36,7 +36,7 @@
 \threelinestitle
 
 
-\subtitle{SUBTITLE}
+\subtitle{SUBTITLE}\marginpar{Have a subtitle or remove it}
 \company{Kidbrooke Advisory AB}
 \supervisors{Pierre Nugues, \href{mailto:pierre.nugues@cs.lth.se}{\texttt{pierre.nugues@cs.lth.se}}}{Edvard Sjögren, \href{mailto:edvard.sjogren@kidbrooke.com}{\texttt{edvard.sjogren@kidbrooke.com}}}
 \examiner{Marcus Klang, \href{mailto:marcus.klang@cs.lth.se}{\texttt{marcus.klang@cs.lth.se}}}
@@ -47,9 +47,11 @@
 }
 
 \theabstract{
-I have evaluated the predictive power of financial news headlines on movement of financial indices. Especially, if a traditional time series model can be improved by adding news data. The tested indices are S\&P 500 and US treasury rate with 1 and 3 years maturity. Text representation of different complexity was used, from TF-IDF to recent transformer models such as BERT and Sentence-BERT. My findings suggest that no model can predict the movement of treasury rates based on news data, but there is a performance over a random classifier for S\&P 500. This was achieved with an accuracy of 59.1\%, using TF-IDF word representation and a random forest classifier. 
+\marginpar{You need to have one or two sentences of intro before describing your contribution}In this thesis, I have evaluated the predictive power of financial news headlines on the movement of financial indices. More specifically, I tried to determine if I could improve a traditional time series model by adding news data. In my experiments, I used text representations of different complexities, from TF-IDF to recent transformer models, such as BERT and Sentence-BERT and, as targets, the S\&P 500 and US treasury rates with one and three years maturity. 
 
-Furthermore, adding news data can predict whether a time series forecast is too high or too low better than a random baseline for all indices. An accuracy of 64.1 \% was scored with SBERT feature extraction and logistic regression. 
+My findings suggest that no model can predict the movement of treasury rates based on news data, but the classification performance for the S\&P 500 is well over a random baseline. The best model using the TF-IDF word representation and a random forest classifier could reach an accuracy of 59.1\%. 
+
+Furthermore, adding news data can predict better than a random baseline whether a time series forecast is too high or too low. This applies to all indices. I could reach an accuracy of 64.1 \% with SBERT feature extraction and logistic regression. 
 }
 
 \keywords{NLP, fintech, deep learning, time series analysis, transformers. }
