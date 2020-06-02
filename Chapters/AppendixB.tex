@@ -1,14 +1,15 @@
 \chapter{Hyperparameter Optimization}\label{appendix:B}
 
-The tested range of hyperparameters and the optimal set found are listed in this appendix. The tuning was done for random forests and multi-layer perceptrons. 
+The tested range of hyperparameters and the optimal set found are listed in this appendix for a few models. The tuning was done for random forests and multilayer perceptrons. The purpose of this appendix is to give a detailed explanation of the methodology, rather than present all tested sets of hyperparameters. 
 
 \section{Random Forest}
 
-Two hyperparameters were trained for the random forest model, in the following ranges.  
-\begin{itemize}
-    \item $\textbf{max\_depth}: $ None, 50, 100
-    \item $\textbf{n\_estimators}: $ 250, 500, 750, 1000
-\end{itemize}
+Two hyperparameters were optimized for the random forest model, in the following ranges.  
+\begin{description}
+    \item[$\textbf{max\_depth}:$]  None, 50, 100
+    \item[$\textbf{n\_estimators}:$] 250, 500, 750, 1000
+\end{description}
+    
 
 The best hyperparameters found through a grid search are displayed in Table \ref{tab:rf_hyper_cd}.
 
@@ -57,7 +58,57 @@ The best hyperparameters found through a grid search are displayed in Table \ref
 \end{table}
 
 
+\section{Multilayer Perceptron}
 
-\section{Multi-layer Perceptron}
+For the regular feed-forward network, the hyperparameters in the following ranges were tested. 
 
-\textcolor{red}{To be continued. I'll probably just add the results for the best models for every task. }
+\begin{description}
+    \item[$\textbf{batch size}:$] 8, 16, 32
+    \item[$\textbf{nodes1}:$] 50, 100, 250, 500
+    \item[$\textbf{nodes2}:$] 0\footnote{0 implies only one hidden layer.}, 50, 100, 250, 500
+    \item[$\textbf{dropout rate (dr)}:$] 0.1, 0.3, 0.5
+    \item[$\textbf{learning rate (lr)}:$] 1e-3, 1e-4, 1e-5
+    \item[$\textbf{optimizer}:$]  RMSprop, Adam
+\end{description}
+
+Out of the combinations of parameters above, 50 sets are randomly selected without replacement. These are then trained using an early-stopping callback with patience 2. A validation split of 0.2 is used, and the set of hyperparameters which yields the highest validation accuracy is chosen. 
+
+\begin{table}[t]
+\begin{tabular}{llrrrrrr}
+      & & \textbf{batch size} & \textbf{nodes1} & \textbf{nodes2} & \textbf{dr} & \textbf{lr} & \textbf{optimizer} \\
+      \hline \hline 
+     \multirow{3}{*}{1 year rate} & TF-IDF & 32 & 50 & 0 & 0.3 & 1e-5 & Adam \\
+     & GloVe & 8 & 50 & 0 & 0.5 & 1e-5 & Adam \\
+     & SBERT & 32 & 500 & 100 & 0.3 & 1e-3 & RMSprop \\
+     \hline 
+     \multirow{3}{*}{3 year rate} & TF-IDF & 32 & 100 & 100 & 0.1 & 1e-5 & RMSprop \\
+     & GloVe & 16 & 50 & 0 & 0.3 & 1e-5 & RMSprop \\
+     & SBERT & 32 & 50 & 0 & 0.1 & 1e-3 & Adam \\
+     \hline 
+     \multirow{3}{*}{S\&P 500} & TF-IDF & 16 & 250 & 50 & 0.5 & 1e-3 & RMSprop \\
+     & GloVe & 32 & 500 & 500 & 0.1 & 1e-3 & Adam \\
+     & SBERT & 32 & 250 & 250 & 0.5 & 1e-4 & Adam  \\
+     \hline 
+\end{tabular}
+\caption{Used hyperparameters for multilayer perceptron on current day predictions as presented in Table \ref{tab:rescdp}.}
+\end{table}
+
+\begin{table}[t]
+\begin{tabular}{llrrrrrr}
+      & & \textbf{batch size} & \textbf{nodes1} & \textbf{nodes2} & \textbf{dr} & \textbf{lr} & \textbf{optimizer} \\
+      \hline \hline 
+     \multirow{3}{*}{1 year rate} & TF-IDF & 32 & 50 & 250 & 0.1 &  1e-5 & Adam \\
+     & GloVe & 8 & 50 & 0 & 0.5 & 1e-5 & RMSprop\\
+     & SBERT & 8 & 100 & 0 & 0.1 & 1e-5 & RMSprop \\
+     \hline 
+     \multirow{3}{*}{3 year rate} & TF-IDF & 16 & 50 & 0 & 0.1 & 1e-3 & RMSprop  \\
+     & GloVe & 8 & 500 & 100 & 0.1 & 1e-3 & Adam \\
+     & SBERT & 32 & 50 & 50 & 0.1 & 1e-4 & RMSprop \\
+     \hline 
+     \multirow{3}{*}{S\&P 500} & TF-IDF & 16 & 250 & 100 & 0.1 & 1e-4 & RMSprop \\
+     & GloVe & 8 & 500 & 0 & 0.3 & 1e-4 & RMSprop \\
+     & SBERT & 8 & 50 & 500 & 0.3 & 1e-5 & RMSprop \\
+     \hline 
+\end{tabular}
+\caption{Used hyperparameters for multilayer perceptron on next day predictions as presented in Table \ref{tab:resndp}.}
+\end{table}

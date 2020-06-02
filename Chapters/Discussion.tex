@@ -1,8 +1,8 @@
 \chapter{Discussion}
 
-This chapter discusses the findings in Chapter \ref{chap:results} and arguments for potential implications of the results. 
+In this chapter, I discuss the findings in Chapter \ref{chap:results} and explore potential implications of the results. 
 
-Firstly, an evaluation of the models in the IMDb task is briefly made. This is followed by evaluations of the models in relation to the financial tasks in Sections \ref{sec:eval_index} and \ref{sec:eval_arma}. A section on the used data follows. The chapter is ended with some general conclusions and recommendations for further research.\marginpar{Please try to use the active voice}
+Firstly, I evaluate the models in the IMDb task briefly. This is followed by evaluations of the models in relation to the financial tasks in Sections \ref{sec:eval_index} and \ref{sec:eval_arma}. A section on the used data follows. In the end of the chapter, I draw some general conclusions and formulate recommendations for further research.
 
 \section{Evaluation of IMDb performance}
 
@@ -12,7 +12,7 @@ Another interesting note is that continued training of GloVe embeddings gave a s
 
 The best model of the traditional, non-transformer based models was the Bidirectional LSTM at 90.1\%. This model was also computationally demanding, needing more than 24 hours to converge. 
 
-It is safe to say that the collection of models are capable of capturing meaningful information from text data.
+It is safe to say that the collection of models are capable of capturing meaningful information from text data, at least for this type of text and task. 
 
 \section{Index Direction Evaluation}\label{sec:eval_index}
 
@@ -36,7 +36,7 @@ Comparing the two tasks -- predicting today's vs. tomorrows index movement -- su
 
 \subsection{Task Evaluation}
 
-The task of predicting the movement of financial indices in general is obviously highly popular, since there is an apparent possibility of profit. The effective market hypothesis introduced by \citeauthor{malkiel1970efficient} claims that the price of an asset reflects all available information regarding that asset. This would imply that analyzing historical news is pointless, since this information is already reflected in the price. An argument for why natural language processing is useful in the context of the effective market hypothesis is the sheer speed of the information retrieval. Even though the models' understanding of language is not as good as a humans, it is capable of processing a lot of information quickly. It can also be useful simply for reducing costs, compared to an employee.
+The task of predicting the movement of financial indices in general is obviously highly popular, since there is an apparent possibility of profit. The effective market hypothesis introduced by \citeauthor{malkiel1970efficient} claims that the price of an asset reflects all available information regarding that asset. This would imply that analyzing historical news is pointless, since this information is already reflected in the price. An argument for why natural language processing is useful in the context of the effective market hypothesis is the sheer speed of the information retrieval. Even though the models' understanding of language is not as good as a humans, it is capable of processing a lot of new information quickly. By assessing if and how the new information has any implications for the price of an asset, the model can play a role in finding a suitable price of an asset. It can also be useful simply for reducing costs, compared to an employee.
 
 \section{ARMA Direction Evaluation}\label{sec:eval_arma}
 
@@ -76,14 +76,15 @@ Finally, the time which the news are gathered, from 2006-10-20 to 2013-11-19, wa
 
 Collecting financial data was a lot easier than collecting news data. The quality of the data is generally better and it is easily available for long time spans. 
 
-It would also be interesting to include a more specific time series for an asset or a stock. Using the price of oil or gold, as well as the stocks of large companies such as Google, Exxon or Apple could make for interesting results and discussion. 
+The results on the S\&P 500 index were more convincing than for the two treasury rates. This does make sense with regards to the used news data which mainly concerns financial news regarding large companies. The relation between news and treasury rates does not seem as apparent, which is in line with my findings. 
+
+It would be interesting to include a more specific time series for an asset or a stock. Using the price of oil or gold, as well as the stocks of large companies such as Google, Exxon or Apple could make for interesting results and discussion. 
 
 \section{Conclusions}
 
 While it is difficult to make general and certain conclusions given the small size of the data set, the results are certainly intriguing. My findings confirm that news titles do have some predictive power on the S\&P 500 index, as well as on the validity of ARMA-models fitted to both treasury rates and S\&P 500. The performance is however most noticeable for S\&P 500. 
 
-Another main takeaway is that the method for feature extraction seems highly problem-dependent. The BERT model performed the best on the IMDb data, whereas it performed poorly on all other tasks. However, SBERT produced good results for the financial tasks. BERT and SBERT are largely similar, but obviously had big differences in performance. My conclusion from this is that for an unknown problem, it is not always best with a large, computationally heavy model. In fact, TF-IDF with logistic regression performed better than BERT with a sigmoid output node in almost all tasks, except for the benchmarking task. 
-
+Another main takeaway is that the method for feature extraction seems highly problem-dependent. The BERT model performed the best on the IMDb data, whereas it performed poorly on all other tasks. However, SBERT produced good results for the all of the tasks. BERT and SBERT are largely similar, but obviously had big differences in performance. My conclusion from this is that for an unknown problem, it is not always best with a large, computationally heavy model. In fact, TF-IDF with logistic regression performed better than BERT with a sigmoid output node in almost all tasks, except for the benchmarking task. 
 
 
 \section{Future Work}

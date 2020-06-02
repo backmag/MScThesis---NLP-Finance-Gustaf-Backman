@@ -107,11 +107,11 @@ There are various methods for estimating the coefficients of the polynomials $A(
 \section{Representation of Language}
 
 Language has enabled people to exchange information in an efficient manner for thousands of years, both through speech and text. The complexity and nuances that makes a language so fitting for transferring information between humans is also what makes it so difficult to represent in numbers. A few of the difficulties when interpreting text language are listed below. 
-\begin{enumerate}[i)]
-    \item \textit{Homonyms}, words that have the same spelling but different meaning. Consider for instance the word \textit{bull}, which might refer to the animal or an investor who believes in a rising market. The same letters, but with vastly different interpretations depending on the context. 
-    \item \textit{Negations}. The sentences \textit{God will help you} and \textit{No God will help you} contain almost the same words, but have completely opposite meanings. 
-    \item \textit{Sarcasm/irony}. This can be hard enough to detect for humans. The phrase \textit{That's just what I needed today!} might actually mean what it literally says, or just the opposite.
-\end{enumerate}
+\begin{description}
+    \item[Homonyms.] Words that have the same spelling but different meaning. Consider for instance the word \textit{bull}, which might refer to the animal or an investor who believes in a rising market. The same letters, but with vastly different interpretations depending on the context. 
+    \item[Negations.] The sentences \textit{God will help you} and \textit{No God will help you} contain almost the same words, but have completely opposite meanings. 
+    \item[Sarcasm/irony.] This can be hard enough to detect for humans. The phrase \textit{That's just what I needed today!} might actually mean what it literally says, or just the opposite.
+\end{description}
 
 Methods used for representing words deal with these difficulties in different ways or not at all. For some shallow, more simple NLP tasks, a model might perform well without understanding homonyms or that two words are closely related. For more complex tasks such as sequence-to-sequence translation of language, a deeper understanding is naturally needed.
 
@@ -157,12 +157,11 @@ Each word of the sentence is then transformed to a one-hot vector where all elem
 
 \subsection{Bag-of-words \& TF-IDF}
 
-An initial \emph{bag-of-words} (BOW) approach to represent a sentence as a vector is to simply keep track of whether a word is included in the sentence or not. If the word is included, the element on the corresponding index has value 1, otherwise 0. The previously used example would then be represented by $x_i$ as, 
-
+An initial \emph{bag-of-words} (BOW) approach to represent a sentence as a vector is to simply keep track of whether a word is included in the sentence or not. If the word is included, the element on the corresponding index has value 1, otherwise 0. Using the same indices as previously and removing stop words, \emph{A gorilla visited Manilla} would then be represented by $x_i$ as, 
 
 \begin{align*}
     x_i = \begin{bmatrix}
-    1 & 1 & 1 & 1
+    1 & 1 & 1 
     \end{bmatrix}
 \end{align*}
 
@@ -205,16 +204,15 @@ A major breakthrough on the topic of word embeddings was made by \citet{mikolov2
 \textit{gorilla visited Manilla} $\implies x = $ \textit{(gorilla, Manilla)} $,y = $ \textit{visited} \\
 \end{center}
 
-Again, note that the order of the words above is not taken into account.
 
 \textit{Continuous skip-grams} also use the fact that words that often occur together have some sense of similarity, but is in a way the inverse of continuous bag-of-words. Rather than predicting the missing word, the objective of the model is to predict the surrounding words. To construct training examples from the same phrase as above with a 1-skip-gram, the following samples are generated. 
 
 \begin{center}
-\textit{A gorilla visited} $\implies (x,y) = $ \textit{(gorilla, a), (gorilla, visited)} \\ \vspace{1em}
-\textit{gorilla visited Manilla} $\implies (x,y) = $ \textit{(visited, gorilla), (visited, Manilla)}
+\textit{A gorilla visited} $\implies x, y_1, y_2 = $ \textit{gorilla, a, visited} \\ \vspace{1em}
+\textit{gorilla visited Manilla} $\implies x,y_1, y_2 = $ \textit{visited, gorilla, Manilla}
 \end{center}
 
-The known words above are \textit{gorilla} and \textit{visited} respectively.\marginpar{I am not sure I understood well you examples. They do not seem to be correct. You obliterate one word and you predict the left and right context gorilla --> (a, visited)} 
+The known words above are \textit{gorilla} and \textit{visited} respectively.
 
 According to the authors\footnote{See for instance: \url{https://code.google.com/archive/p/word2vec/}}, the continuous bag-of-words model is faster for training but the continuous skip-gram model is better for infrequent words. 
 
@@ -256,7 +254,7 @@ A recent addition to the family of NLP-models are transformer based models, wher
 \subsection{Tree-based \& Feed Forward Models}\label{sec:treeff} 
 
 \paragraph{Random Forests.}
-A random forest classifier is an ensembling technique, consisting of several decision trees. Predictions are made by taking the mode (for classification) or the average (for regression) of the predictions from all of the decision trees. Each decision tree in a random forest classifier is fitted to a bootstrap sample of the training set. Every tree is likely to overfit to the data it is presented with, but the full forest of trees has better generalizability as a consequence. Random forests have been a widely popular model which tends to work well without much tuning out of the box for shallow machine learning tasks \citep{chollet2017deep}. 
+A random forest classifier is an ensembling technique, consisting of several decision trees. Predictions are made by taking the mode (for classification) or the average (for regression) of the predictions from all of the decision trees. Each decision tree in a random forest classifier is fitted to a bootstrap sample of the training set. Every tree is likely to overfit to the data it is presented with, but the full forest of trees has better generalizability as a consequence. The random forest model is a widely popular model which tends to work well without much tuning out of the box for shallow machine learning tasks \citep{chollet2017deep}. 
 
 \paragraph{Logistic Regression.}
 
@@ -278,9 +276,9 @@ A multi layer perceptron, or feed forward network, is a neural network that seek
 
 The core part of the multilayer perceptron is the single perceptron unit displayed in Figure~\ref{fig:perceptron}. It is easy to see that the prediction $\hat{y}$ is a function of the inputs, weights and biases as $\hat{y} = \sigma(x_1 w_1 + x_2 w_2 + b)$, where $\sigma$ is the activation function denoted by a sigmoid in the figure. 
 
-The training of the model will select the weight and biases such that the predictions are as accurate as possible. The bias term $b$ is usually included in the term \textit{weights} for convenience, since it can be seen as a weight for the input value $x_0 = 1$. 
+The training of the model will select the weight and biases such that the predictions are as accurate as possible. The bias term $b$ is usually included in the term \textit{weights} as $w_0$. This is made possible by adding an extra feature $x_0 = 1$, implying $b = w_0 x_0 = w_0$. This simplifies notation, especially for matrices. 
 
-The performance of classification is measured by some loss function $J$, which depends on the training samples $(x,y)$ and the weights $w$.  A common loss function for binary classification is the binary crossentropy, defined in Eq. \ref{eq:bce}, where $y$ is the true label, $\hat{y}$ is the predicted label and $p(\hat{y})$ is the predicted probability of the sample being of label 1. Conversely, $1 - p(\hat{y})$ is the probability of the sample being of label 0. 
+The performance of classification is measured by some loss function $J$, which depends on the training samples $(x,y)$ and the weights $w$.  A common loss function for binary classification is binary crossentropy, defined in Eq. \ref{eq:bce}. The notation is such that $y$ is the true label, $\hat{y}$ is the predicted label and $p(\hat{y})$ is the predicted probability of the sample being of label 1. Conversely, $1 - p(\hat{y})$ is the probability of the sample being of label 0. 
 
 \begin{align}
     L(y,\hat{y}) = -\frac{1}{N} \sum_{i=1}^N y_i \log{(p(\hat{y}_i))} + (1 - y_i) \log{(1 - p(\hat{y}_i))} \label{eq:bce}
@@ -300,7 +298,7 @@ Combining the basic functionality in Figure~\ref{fig:perceptron} with the networ
 
 \subsection{Recurrent Models}\label{sec:recmods}
 
-A drawback which affects all of the models presented in the previous section is that the order of words is not taken into account. Of course, the order can be considered in the pre-processing if some more complex transformation is used (e.g. Sentence-BERT), but these transformations usually utilize some recurrent or attention-based method. 
+A drawback which affects all of the models presented in the previous section is that the order of words is not taken into account. Of course, the order can be considered in the pre-processing if some more complex transformation is used (e.g. Sentence-BERT), but these transformations usually utilize some recurrent or attention-based method. A recurrent model takes the sequence order into account. 
 
 \paragraph{Recurrent Neural Networks.}
 
@@ -315,7 +313,7 @@ Obviously, a sentence can not be defined just by the word it contains, one must 
     \label{fig:rnn}
 \end{figure}
 
-As seen in Figure~\ref{fig:rnn}, a RNN can be seen as a feed-forward neural network where previous time steps are used as input. Assuming a hidden layer activation function $\sigma_h$ and an output activation function $\sigma_o$, the recurrent nature of the model can be further explained. Let the other notation be as in Figure~\ref{fig:rnn}. 
+As seen in Figure~\ref{fig:rnn}, an RNN can be seen as a feed-forward neural network where previous time steps are used as input. Assuming a hidden layer activation function $\sigma_h$ and an output activation function $\sigma_o$, the recurrent nature of the model can be further explained. Let the other notation be as in Figure~\ref{fig:rnn}. 
 
 \begin{align}
     \hat{y_t} &= \sigma_o(V \cdot h^{(t)}) = \sigma_o(V \cdot  \sigma_h(U x^{(t)} + W h^{(t-1)})) \\
@@ -353,7 +351,7 @@ Bidirectional LSTMs have been widely popular in the field of natural language pr
 In \citeyear{NIPS2017_7181}, \citeauthor{NIPS2017_7181} wrote a paper, \textit{Attention is all you need}, which had a considerable influence on language modelling and machine translation. The authors presented a new model -- the Transformer -- which does away with the recurrence and instead only uses the concept of attention. One of the problems with recurrent networks is the lack of parallelizability when training the network. The Transformer allows for more parallelization than previous models and consequently trains quicker than models based on recurrence. This is proved by a new state of the art score of 28.4 BLEU on the WMT 2014 English-to-German translation task which was trained at a fraction of the training cost compared to the previous state of the art models. 
 
 
-In the rest of the section, I will follow \citet{NIPS2017_7181}, as well as a more detailed description by \citet{jayalammar2018} to describe the principles behind the Transformer. The explained model is used for sequence-to-sequence modelling such as translation, but is also the foundation for BERT which can be used for classification. This is the motivation for this rather detailed section on transformers. 
+In the rest of the section, I will follow \citet{NIPS2017_7181}, as well as a more detailed description by \citet{jayalammar2018} to describe the principles behind the Transformer. The explained model is used for sequence-to-sequence modelling such as translation, but is also the foundation for BERT which can be used for classification, and is presented later. This is the motivation for this rather detailed section on transformers, even though the model itself is not used in this project. 
 
 \begin{figure}[ht]
     \centering
@@ -373,7 +371,7 @@ The core idea is to encode the input into a manageable, general representation a
 
 \subsubsection{Transformer Tokenization}\label{sec:transtok}
 
-Firstly, the input to the model is tokenized in a different way than what has been described for previous models. It is similar in the sense that each token is transformed into an embedding. \citet{NIPS2017_7181} uses a WordPiece embeddings of dimension $d_{model} = 512$. The positional encoding is however quite different. 
+Firstly, the input to the model is tokenized in a different way than what has been described for previous models. It is similar in the sense that each token is transformed into an embedding. \citet{NIPS2017_7181} uses a WordPiece embeddings of dimension $d_{model} = 512$. The way the model handles positional information of words is however quite different. 
 
 Rather than letting a sequential input to the model represent the position of tokens similar to an RNN, the positional information is included in sine and cosine functions with different frequencies. 
 
@@ -394,7 +392,7 @@ This way of representing the positions of a word might seem cumbersome at first,
     \item[Dimensional consistency.] These positional embeddings can be chosen to have the same dimension as the vectors used for the word embedding. In the original papers, the positional encodings are simply added to each element $i$ of the $d_{model} = 512$ dimensions. 
     \item[Generalizable.] This method can extrapolate to sentence lengths not seen in the training data. 
     \item[Simple relative positioning.] The fact that $PE(pos, i)$ can be written as a linear function of $PE(pos, i + k)$ for any $k$, should according to \citet{NIPS2017_7181} make it easier for the model to acknowledge relative positions. 
-    \item[No recurrence.] This is not unique for this sinusoidal version of positional encoding, but is however one of the main features of the transformer, allowing more parallel computations. 
+    \item[No recurrence.] This is not unique for this sinusoidal version of positional encoding, but is however one of the main features of the transformer, allowing for more parallel computations. 
 \end{description}
 
 \subsubsection{Encoder \& Self-Attention}
@@ -418,7 +416,7 @@ $PE_1$&$PE_2$&$PE_3$&$PE_4$\\
 \end{tabular}
 \end{quote}
 
-The vector which is given to the self-attention layer is then $h^o$ as in Eq. \ref{eq:attinp}. Note that the dimension for $x, PE$ and $h^o$ is $l \times d_{model}$, where $l = 4$ in this example and $d_{model} = 512$ in the original paper \citep{NIPS2017_7181}. 
+The vector which is given to the self-attention layer is then $h^o$ as in Eq. \ref{eq:attinp}. Note that the dimension for $x, PE$ and $h^o$ is $l \times d_{model}$, where $l = 4$ in this example and $d_{model} = 512$ in the original paper. 
 
 \begin{align}
     x &= \begin{bmatrix} x_1 & x_2 & x_3 & x_4 \end{bmatrix}^\intercal \\
@@ -441,7 +439,7 @@ These vectors are used to calculate an attention score for a given word $i$ vers
     \text{score}_{i,j} = \frac{q_i \boldsymbol{\cdot} k_j}{\sqrt{d_k}}
 \end{align}
 
-The scaling by $d_k$ is made to keep the gradients of the attention layer at a more manageable level. The scores for the word $i$ against all other words $j$ are then normalized with a softmax function, ensuring the sum over all words $j$ sums up to one and that larger scores are boosted. The softmaxed score for word $i$ against word $j$ is then calculated as in Eq. \ref{eq:softmax}.
+The scaling by $\sqrt{d_k}$ is made to keep the gradients of the attention layer at a more manageable level. The scores for the word $i$ against all other words $j$ are then normalized with a softmax function, ensuring the sum over all words $j$ sums up to one and that larger scores are boosted. The softmaxed score for word $i$ against word $j$ is then calculated as in Eq. \ref{eq:softmax}.
 
 \begin{align}
     \text{softscore}_{i,j} = \frac{e^{\text{score}_{i,j}}}{\sum\limits_{\forall j} e^{\text{score}_{i,j}}}
@@ -490,7 +488,7 @@ The final step in the encoder layer is a position-wise feed forward network, rou
     F(x) = \max(0, x W_1 + b_1)W_2 + b_2)\label{eq:attmlp}
 \end{align}
 
-Another important property is the residual connections seen in Figure~\ref{fig:tr_arch}. These allow information to transfer to a new layer without being distorted in the attention calculations. \citet{NIPS2017_7181} claim this is particularly important for the positional encodings to stay intact deeper into the network. 
+Another important property of the Transformer is the residual connections seen in Figure~\ref{fig:tr_arch}. These allow information to be transferred to a new layer without being distorted in the attention calculations. \citet{NIPS2017_7181} claim this is particularly important for the positional encodings to stay intact deeper into the network. 
 
 \begin{figure}[h]
     \centering
@@ -571,7 +569,12 @@ This section concerns the problem of overfitting in a machine learning context. 
 
 \subsection{Train, Validation, and Test Set}\label{sec:trainvaltest}
 
-The main goal of machine learning is to be able to have some predictive power on previously unseen data. This is a difference between machine learning optimization and optimization in general. A model is said to \emph{generalize} well if it shows good performance on data it has not seen before. This is also how a model is typically used for some application -- we want to use the model to predict things of uncertainty. 
+A popular definition of machine learning is quoted from \citeauthor{tommitchell1997}:
+\begin{quote}
+    \emph{``A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P if its performance at tasks in T, as measured by P, improves with experience E.''}
+\end{quote}
+
+The main goal of machine learning is to be able to have some predictive power on previously unseen data. This is a difference between machine learning optimization and optimization in general. A model is said to \emph{generalize} well if it shows good performance on data it has not seen before. This is also how a model is typically used for some application -- we want to use the model to predict things of uncertainty, not things we already know. 
 
 Suppose we have gathered a dataset $\mathcal{D}$ to train a model. In order to approximate how the model performs on unseen data, we can hide a partition of the dataset during training. Letting our initial dataset $\mathcal{D}$ be the set $\{\mathcal{D}_{train}, \mathcal{D}_{test}\}$, we optimize the model on the data $\mathcal{D}_{train}$ by minimizing some loss function $\mathcal{L}$ over the samples in $\mathcal{D}_{train}$. The generalization error of the trained model is then approximated by $\mathcal{L}(\mathcal{D}_{test})$.
 
@@ -581,7 +584,7 @@ The training of a machine learning model can be simply expressed as minimizing t
     \item Minimize the difference between the training error and the test error. 
 \end{enumerate}
 
-If the training error is small while the difference between the training error and the test error is large, we say that the model has \emph{overfitted} to the training data. This usually means that the model has too high capacity. If the training error is large, but the difference between training error and test error is small, it indicates that the model is \emph{underfitted}. This implies the model is not complex enough.  
+If the training error is small while the difference between the training error and the test error is large, we say that the model has \emph{overfitted} to the training data. This usually means that the model has too high capacity and tries to represent too complex patterns. If the training error is large, but the difference between training error and test error is small, it indicates that the model is \emph{underfitted}. This implies that the model is not complex enough.  
 
 
 A fundamental rule of machine learning is that the results on the test set can not influence the model structure in any way. The purpose of the test set is to estimate how well the model performs on new data. It is not a metric that is to be used for model optimization. Still, the objective is to optimize the model on unseen data. This is addressed by introducing a \emph{validation set}. 
@@ -590,7 +593,7 @@ Let the full dataset $\mathcal{D}$ be partitioned into three sets, $\{\mathcal{D
 
 \subsection{Hyperparameters}\label{sec:hyper}
 
-A machine learning model is defined by its tuneable parameters and its hyperparameters. The tuneable parameters are normally just called parameters and are the trainable weights in a model. The hyperparameters are properties of the model that must be set before training is started. Hyperparameters for a neural networks are typically the number of nodes in each layer, which activation function to use in the nodes, the depth of the network, what sort of optimization routine is used, the learning rate, etc. 
+A machine learning model is defined by its tuneable parameters and its hyperparameters. The tuneable parameters are normally just called parameters and are the trainable weights in a model. The hyperparameters are properties of the model that must be set before the training is started. Hyperparameters for a neural networks are typically the number of nodes in each layer, which activation function to use in the nodes, the depth of the network, what sort of optimization routine is used, the learning rate, etc. 
 
 Many of these parameters can adjust the capacity of the network, i.e. how complex structures the network can model. If the model is too complex, it might be too sensitive to the training data and adapt to patterns in the training data which are not transferable to unseen data. If the model is not complex enough, it might fail to retrieve important patterns from the training data.
 
@@ -611,7 +614,7 @@ The parameter $\lambda$ is here a hyperparameter used to control the regularizat
 
 \citeauthor{hinton2012improving} presented another regularization method used in the context of neural networks in \citeyear{hinton2012improving} --  \emph{dropout} regularization. This removes a node in the network with probability $p$ during every step in the optimization. It is arguably quite similar to training several different networks, since the network is constantly changing and removing nodes, altering its structure. Dropout can be seen as a cheap way of training and evaluating an ensemble of exponentially many neural networks. 
 
-The nodes are only removed with probability $p$ during training. When the model is used for prediction, the weights of the nodes where dropout has been used is multiplied by $1 - p$. The argument for why this is reasonable is that seems to capture the right expected value of the output from that node. Not a very theoretical argument, but it seems to work well \citep{hinton2012improving}. 
+The nodes are only removed with probability $p$ during training. When the model is used for prediction, the weights of the nodes where dropout has been used is multiplied by $1 - p$. The argument for why this is reasonable is that seems to capture the correct expected value of the output from that node. Not a very theoretical argument, but it seems to work well \citep{hinton2012improving}. 
 
 
 \subsection{Cross-Validation}\label{sec:crossval}
@@ -633,7 +636,7 @@ Finally, the performance of the model on unseen data is estimated on the test se
 
 \subsection{Grid Search \& Random Search}
 
-Using the $k$-fold cross validation technique previously presented can be computationally expensive if a large set of hyperparameters are to be tested. Suppose we want to try the  number of hyperparameters in Table \ref{tab:hyper}\marginpar{Then what?}.
+Using the $k$-fold cross validation technique previously presented can be computationally expensive if a large set of hyperparameters are to be tested. Suppose we want to try the  number of hyperparameters in Table \ref{tab:hyper}. This gives 6750 combinations of parameters. Furthermore, using $k$-fold cross validation with $k=10$ would imply 67,500 fitted models in order to find the best set of hyperparameters. This might obviously be reasonable for smaller sets, but it rather quickly grows infeasible to do an exhaustive search over all possible combinations. 
 
 \begin{table}[t]
     \centering
@@ -655,12 +658,10 @@ Using the $k$-fold cross validation technique previously presented can be comput
     \label{tab:hyper}
 \end{table}
 
-Furthermore, using $k$-fold cross validation with $k=10$ would imply 67,500 fitted models in order to find the best set of hyperparameters. This might obviously be reasonable for smaller sets, but it rather quickly grows infeasible to do an exhaustive search over all possible combinations. 
-
 A common and effective alternative is to use a random search. Only the possible distributions of the hyperparameters are defined, and a fixed number of combinations of these are evaluated. Random search finds good solutions quicker than grid search, as it reduces the validation error more for a given number of tested hyperparameters \citep{Goodfellow-et-al-2016}. 
 
 \section{Performance Metrics}
-The metrics used to evaluate the models are accuracy, recall, precision and F1-score. While these metrics are all somewhat related, they give different insights of performance. For convenience a binary confusion matrix is displayed in Table~\ref{fig:confmat}. 
+The metrics used to evaluate the models are accuracy and F1-score. The F1-score is defined by the precision and recall, so these metrics are explained as well. For convenience a binary confusion matrix is displayed in Table~\ref{fig:confmat}. 
 
 \begin{table}[ht]
 \centering
@@ -668,9 +669,9 @@ The metrics used to evaluate the models are accuracy, recall, precision and F1-s
      & & \multicolumn{2}{c}{Predictions} \\
      & & \multicolumn{1}{|c|}{0} & \multicolumn{1}{c|}{1}\\
       \cline{2-4}
-     \multirow{2}{*}{Actual values} & 0 & \multicolumn{1}{|c|}{True Negatives (TN)} &  \multicolumn{1}{c|}{False Negatives (FN)} \\
+     \multirow{2}{*}{Actual values} & 0 & \multicolumn{1}{|c|}{True Negatives (TN)} &  \multicolumn{1}{c|}{False Positives (FP)} \\
      %\cline{2-4}
-      & 1 & \multicolumn{1}{|c|}{False Positives (FP)} & \multicolumn{1}{c|}{True Positives (TP)} \\ 
+      & 1 & \multicolumn{1}{|c|}{False Negatives (FN)} & \multicolumn{1}{c|}{True Positives (TP)} \\ 
 \end{tabular}
 \caption{Confusion matrix for binary classification.}
 \label{fig:confmat}
@@ -678,8 +679,8 @@ The metrics used to evaluate the models are accuracy, recall, precision and F1-s
 
 \begin{description}
     \item[Accuracy:] The most intuitive measure of performance, simply the ratio of correct classifications to the total number of classifications. If the labels of a data set are symmetric, this is a good measure of performance. However, if 90 \%  of the samples are of label $a$ and 10\% of label $b$, a model which constantly predicts label $a$ gets an accuracy of 90\%. It doesn't reveal any information about which data is classified incorrectly. 
-    \item[Precision:] The number of correctly classified samples in one class divided by the total number of predictions of that class. The precision $P$ for class 0 in Table~\ref{fig:confmat} is calculated as $\displaystyle{P = \frac{TN}{TN + FP}}$. 
-    \item[Recall:] The number of correctly classified samples in one class divided by the total number of samples in that class. In other words, a measure of how many percent of a class that was found. In relation to Table~\ref{fig:confmat} it is calculated as $\displaystyle{R = \frac{TN}{TN + FN}}$. Recall is also referred to as \textit{sensitivity} in statistical literature. 
+    \item[Precision:] The number of correctly classified samples in one class divided by the total number of predictions of that class. The precision $P$ for class 0 in Table~\ref{fig:confmat} is calculated as $\displaystyle{P = \frac{TN}{TN + FN}}$. 
+    \item[Recall:] The number of correctly classified samples in one class divided by the total number of samples in that class. In other words, a measure of how many percent of a class that was found. In relation to Table~\ref{fig:confmat} it is calculated as $\displaystyle{R = \frac{TN}{TN + FP}}$. Recall is also referred to as \textit{sensitivity} in statistical literature. 
     \item[F1-score:] A measure which combines precision and recall as the harmonic mean of the two. Calculated as $\displaystyle{F1 = 2 \frac{R \cdot P}{R + P}}$. An F1-score of 1 implies perfect recall and precision.
 \end{description}
 

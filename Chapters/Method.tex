@@ -8,11 +8,10 @@ The financial indices I considered in this project are the S\&P 500 and the US t
     \item The US Treasury rate with maturity $n$ is the yield on a government zero coupon bond with the same maturity. 
 \end{itemize}
 
-All optimizations are carried out on in a Jupyter notebook environment using python 3.7.4 and TensorFlow 1.15. Python is run on a local computer with 16 GB RAM and an Intel i7-10510U CPU, 1.80 GHz. 
-\textcolor{red}{Is this relevant? }\marginpar{Yes it is, but usually, you do not write this in the introduction. You should move it somewhere in the text, where you describe your experiments. In addition, the computing power is relevant only with computing time information. Many people have it nonetheless, even in scientific papers (It does not harm)}
+
 \section{Data Collection and Pre-Processing}
 
-All models are trained on two datasets -- a labeled movie review dataset from IMDb for benchmarking and an unlabeled financial news dataset from Reuters for the financial interpretation. 
+All models are trained on two datasets -- a labeled movie review dataset from IMDb for benchmarking and an unlabeled financial news dataset from Reuters combined with time series data for the financial interpretation. 
 
 \subsection{IMDd Dataset -- Benchmarking}
 The IMDb dataset is a commonly used benchmarking dataset for binary classification of text data. The dataset was compiled by \citet{maas-EtAl:2011:ACL-HLT2011} and contains 50,000 polarized movie reviews with 25,000 positive and negative reviews respectively. Evaluating models on this dataset can validate that the models can capture some meaningful information from text data and thus give better insight about the performance on the financial task. It also  generally confirms that the model is implemented appropriately. For comparison, \citeauthor{xie2019unsupervised} achieved 95.8\% accuracy using BERT large and unsupervised data augmentation on the IMDb dataset. This is in the state of the art-region, even though there are models that have scored slightly higher. 
@@ -187,7 +186,7 @@ The LSTM layer is wrapped in a bidirectional layer, which implies the input sequ
 
 \subsection{Transformer Models}
 
-One transformer model has been implemented, but tuned with two different final layers\marginpar{I am not sure I understand the word but here}. A pre-trained BERT-base model from TensorFlow hub is used and implemented as a Keras layer. The two final layers of the BERT base model are fine tuned. One model simply adds a sigmoid output node to the BERT-base model. The other model appends a hidden layer with 256 nodes and dropout regularization. 
+One transformer model has been implemented, tuned with two different final layers. A pre-trained BERT-base model from TensorFlow hub is used and implemented as a Keras layer. The two final layers of the BERT base model are fine tuned. One model simply adds a sigmoid output node to the BERT-base model. The other model appends a hidden layer with 256 nodes and dropout regularization. 
 The training is done with hyperparameters recommended by \citeauthor{devlin2018bert}, a batch size of 16 and an Adam optimizer with learning rate 2e-5. 
 The benchmarking on the IMDb dataset is trained for 4 epochs. The financial dataset is significantly smaller (1,846 samples vs 20,000 samples) and is thus trained using an early stopping callback conditioned on validation accuracy.  
 
@@ -205,3 +204,7 @@ The selection of hyperparameters was carried out using either a grid search or a
 The neural network-style models were trained using an early-stopping callback. This implies that the model is trained until the validation accuracy has not improved for a number of epochs. The final model is then chosen as the model with the highest validation accuracy. 
 
 The tested ranges and concluded sets of parameters for a selection of models are listed in Appendix \ref{appendix:B}.
+
+\section{Implementation Notes}
+
+All optimizations are carried out on in a Jupyter notebook environment using python 3.7.4 and TensorFlow 1.15. Python is run on a local computer with 16 GB RAM and an Intel i7-10510U CPU, 1.80 GHz. 
